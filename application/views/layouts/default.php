@@ -8,6 +8,8 @@
 	<meta name="keywords" content="<?= $this->asset->getMetaKeys() ?>">
 	<title><?= $this->asset->getTitle() ?></title>
 	<link rel="shortcut icon" href="/public/images/icons/favicon.png" type="image/x-icon">
+	<link href="https://fonts.googleapis.com/css?family=PT+Sans+Caption&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css" integrity="sha384-oS3vJWv+0UjzBfQzYUhtDYW+Pj2yciDJxpsK1OYPAYjqT085Qq/1cq5FLXAZQ7Ay" crossorigin="anonymous">
 	<link rel="stylesheet" href="/public/style/css/main.css">
 	<link rel="stylesheet" href="/public/style/bootstrap/bootstrap-grid.css">
 	<link rel="stylesheet" href="/public/style/bootstrap/bootstrap.css">
@@ -21,7 +23,9 @@
 	<? endforeach ?>
 </head>
 <body>
+	<?= $header ?>
 	<?= $content ?>
+	<?= $footer ?>
 	<script type="text/javascript" src="/public/style/bootstrap/bootstrap.bundle.min.js"></script>
 	<script type="text/javascript" src="/public/style/bootstrap/bootstrap.js"></script>
 </body>
