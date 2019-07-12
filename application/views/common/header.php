@@ -8,7 +8,7 @@
 						О проекте
 						<i class="fas fa-sort-down"></i>
 					</a>
-					<a href="/login.php">
+					<a href="/login">
 						<i class="fas fa-user-alt"></i>
 						Кабинет
 					</a>

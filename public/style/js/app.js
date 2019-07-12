@@ -33,37 +33,6 @@ $(function(){
 		});
 	});
 
-	
-	$('.owl-carousel').owlCarousel({
-	    loop:true,
-	    margin:10,
-	    nav:true,
-	    responsive:{
-	        0:{
-	            items:1
-	        },
-	        600:{
-	            items:1
-	        },
-	        1000:{
-	            items:1
-	        }
-	    }
-	});
-
-	// $('.grid').masonry({
-	//   // options
-	//   itemSelector: '.grid-item',
-	//   columnWidth: 200
-	// });
-
-
-	// $('.grid').packery({
-	//   // options
-	//   itemSelector: '.grid-item',
-	//   gutter: 10
-	// });
-
 
 	$('#search').click(function(){
 		$('body').css('position', 'relative');

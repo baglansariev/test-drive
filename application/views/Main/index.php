@@ -1,3 +1,4 @@
+<?php echo $header ?>
 <main>
 	<div id="wrapper">
 		<div class="albums owl-carousel">
@@ -265,3 +266,4 @@
 		</div>
 	</div>
 </main>
+<?php echo $footer ?>
