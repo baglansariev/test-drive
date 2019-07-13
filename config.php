@@ -17,6 +17,7 @@
 	define('DB_HOST', 'localhost');
 	define('DB_USERNAME', 'root');
 	define('DB_PASSWORD', '');
-	define('DB_DATABASE', 'bandura');
+	define('DB_DATABASE', 'premier_kazakhstan');
+	define('DB_PREFIX', 'pk_');
 
 	define('DS', DIRECTORY_SEPARATOR);

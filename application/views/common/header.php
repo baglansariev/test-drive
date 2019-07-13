@@ -18,7 +18,7 @@
 		<div class="header-mid">
 			<div class="container">
 				<a href="" class="main-logo">
-					<img src="public/images/main-logo.png" alt="">
+					<img src="/public/images/main-logo.png" alt="">
 				</a>
 			</div>
 		</div>

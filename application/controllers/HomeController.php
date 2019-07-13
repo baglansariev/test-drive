@@ -20,8 +20,8 @@
             // $client->SetClientSecret("ow32ubZA_Dv8jhFtyzqQJV52");
             // $client->SetRedirectUri($_SERVER['REQUEST_URI']);
 
-	    	$data['header'] = $this->load->controller('common/HeaderController');
-	    	$data['footer'] = $this->load->controller('common/FooterController');
+	    	$data['header'] = $this->load->controller('common/header');
+	    	$data['footer'] = $this->load->controller('common/footer');
 	    	$this->view->response('Main/index', $data);
 	    }
 	}

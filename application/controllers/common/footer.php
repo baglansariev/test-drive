@@ -2,7 +2,7 @@
 	namespace application\controllers\common;
 	use application\core\engine\Controller;
 
-	class FooterController extends Controller
+	class Footer extends Controller
 	{
 		public function index()
 		{

@@ -6,38 +6,81 @@
     {
         public function indexAction()
         {
-            $this->view->asset->setTitle('Личный кабинет');
+            if($this->session->has('auth') && $this->session->get('auth') == true){
 
-            $data['header'] = $this->load->controller('common/HeaderController');
-            $data['footer'] = $this->load->controller('common/FooterController');
-            $this->view->response('Account/account', $data);
+                $this->view->asset->setTitle('Личный кабинет');
+
+                $data = array();
+                $data['account_content'] = $this->load->controller('Account/personalData');
+
+                $data['column_left'] = $this->load->controller('Account/columnLeft');
+                $data['header'] = $this->load->controller('common/header');
+                $data['footer'] = $this->load->controller('common/footer');
+
+                if(isset($this->request->post['account_tab'])){
+                    $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
+
+                    header('Content-Type: application/json; charset=UTF-8');
+                    echo $json;
+                }
+                else{
+                    $this->view->response('Account/account', $data);
+                }
+            }
+            else{
+                header('Location: /login');
+            }
+
         }
 
         public function loginAction()
         {
-            $this->view->asset->setTitle('Вход');
+            if(!$this->session->has('auth')){
 
-            $data['header'] = $this->load->controller('common/HeaderController');
-            $data['footer'] = $this->load->controller('common/FooterController');
-            $this->view->response('Account/login', $data);
+                $this->view->asset->setTitle('Вход');
 
+                $data['header'] = $this->load->controller('common/header');
+                $data['footer'] = $this->load->controller('common/footer');
+                $this->view->response('Account/login', $data);
+            }
+            else{
+                header('Location: /account');
+            }
         }
 
         public function registerAction()
         {
-            $this->view->asset->setTitle('Регистрация');
+            if(!$this->session->has('auth')){
 
-            $data['header'] = $this->load->controller('common/HeaderController');
-            $data['footer'] = $this->load->controller('common/FooterController');
-            $this->view->response('Account/register', $data);
+                $this->view->asset->setTitle('Регистрация');
+
+                $data['header'] = $this->load->controller('common/header');
+                $data['footer'] = $this->load->controller('common/footer');
+                $this->view->response('Account/register', $data);
+            }
+            else{
+                header('Location: /account');
+            }
         }
 
         public function agreementAction()
         {
             $this->view->asset->setTitle('Условия соглашения');
 
-            $data['header'] = $this->load->controller('common/HeaderController');
-            $data['footer'] = $this->load->controller('common/FooterController');
-            $this->view->response('Account/account', $data);
+            $data['account_content'] = $this->load->controller('account/agreement');
+
+            $data['column_left'] = $this->load->controller('Account/columnLeft');
+            $data['header'] = $this->load->controller('common/header');
+            $data['footer'] = $this->load->controller('common/footer');
+
+            if(isset($this->request->post['account_tab'])){
+                $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
+
+                header('Content-Type: application/json; charset=UTF-8');
+                echo $json;
+            }
+            else{
+                header('Location: /');
+            }
         }
     }

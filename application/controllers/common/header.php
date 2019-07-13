@@ -2,7 +2,7 @@
 	namespace application\controllers\common;
 	use application\core\engine\Controller;
 
-	class HeaderController extends Controller
+	class Header extends Controller
 	{
 		public function index()
 		{

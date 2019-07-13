@@ -16,6 +16,7 @@
 	        $this->routes = require_once(ROUTES_PATH . 'routes.php');
 	        $this->request = new Request;
 	        $this->view = new View;
+	        $this->request->session->start();
 	    }
 
 	    public function match()
