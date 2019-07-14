@@ -6,7 +6,7 @@
     {
         public function indexAction()
         {
-            if($this->session->has('auth') && $this->session->get('auth') == true){
+            if($this->session->has('auth') && $this->session->get('auth')){
 
                 $this->view->asset->setTitle('Личный кабинет');
 
@@ -53,6 +53,27 @@
             if(!$this->session->has('auth')){
 
                 $this->view->asset->setTitle('Регистрация');
+                $this->view->asset->setJs('/public/style/js/forms.js');
+
+                $data = array();
+                $data['msg'] = array();
+                $data['msg']['place_name'] = '';
+                $data['msg']['user_fullname'] = '';
+                $data['msg']['user_email'] = '';
+                $data['msg']['user_password'] = '';
+                $data['msg']['user_confirm'] = '';
+
+                if(
+                    $this->request->has('place_name', 'post') &&
+                    $this->request->has('user_fulname', 'post') &&
+                    $this->request->has('user_email', 'post') &&
+                    $this->request->has('user_password', 'post') &&
+                    $this->request->has('user_confirm', 'post')
+                ){
+//                    if(){
+
+//                    }
+                }
 
                 $data['header'] = $this->load->controller('common/header');
                 $data['footer'] = $this->load->controller('common/footer');
