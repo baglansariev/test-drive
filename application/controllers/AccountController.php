@@ -57,23 +57,37 @@
 
                 $data = array();
 
-                if($this->request->has('register_data', 'post')){
-                    $json = array();
-                    $json['error'] = '';
-                    if(preg_match("#^([a-zA-Z]*[0-9]*\.*-*_*)+@([a-zA-Z]*\.(a-zA-Z){2-3})$#")){
-                        $json['data'] = 'success';
-                        $jsonAnswer = json_encode($json['data']);
+                $data['place_name_msg'] = '';
+                $data['user_fullname_msg'] = '';
+                $data['user_email_msg'] = '';
+                $data['user_password_msg'] = '';
 
-                        header('Content-Type: application/json; charset=UTF-8');
-                        echo $jsonAnswer;
+                if(!empty($this->request->post)){
+                    if($this->request->has('place_name', 'post') &&
+                        $this->request->has('user_fullname', 'post') &&
+                        $this->request->has('user_email', 'post') &&
+                        $this->request->has('user_password', 'post') &&
+                        $this->request->has('user_confirm', 'post')
+                    ){
+
+                        if(preg_match("#^([a-zA-Z]*[0-9]*\.*-*_*)+@([a-zA-Z]*\.[a-zA-Z]{2,3})$#", $this->request->post['user_email'])){
+                            if($this->request->post['user_password'] == $this->request->post['user_confirm']){
+                                devPrint('YES');
+                            }
+                            else{
+                                $data['user_password_msg'] = 'Пароли не совпадают';
+                            }
+                        }
+                        else{
+                            $data['user_email_msg'] = 'Некорректный E-mail адрес';
+                        }
                     }
                     else{
-                        $json['error'] = 'Некорректный E-mail адрес!';
-
-                        $jsonAnswer = json_encode($json['error']);
-
-                        header('Content-Type: application/json; charset=UTF-8');
-                        echo $jsonAnswer;
+                        !$this->request->has('place_name', 'post')? $data['place_name_msg'] = 'Поле "название заведения" не должно быть пустым' : $data['place_name_msg'] = '';
+                        !$this->request->has('place_name', 'post')? $data['user_fullname_msg'] = 'Поле "Ф.И.О. ответственного лица" не должно быть пустым' : $data['user_fullname_msg'] = '';
+                        !$this->request->has('place_name', 'post')? $data['user_email_msg'] = 'Поле "E-mail" не должно быть пустым' : $data['user_email_msg'] = '';
+                        !$this->request->has('place_name', 'post')? $data['user_password_msg'] = 'Поле "Пароль" не должно быть пустым' : $data['user_password_msg'] = '';
+                        !$this->request->has('place_name', 'post')? $data['user_confirm_msg'] = 'Поле "Подтверждение пароля" не должно быть пустым' : $data['user_confirm_msg'] = '';
                     }
                 }
 
