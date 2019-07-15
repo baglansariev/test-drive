@@ -56,23 +56,25 @@
                 $this->view->asset->setJs('/public/style/js/forms.js');
 
                 $data = array();
-                $data['msg'] = array();
-                $data['msg']['place_name'] = '';
-                $data['msg']['user_fullname'] = '';
-                $data['msg']['user_email'] = '';
-                $data['msg']['user_password'] = '';
-                $data['msg']['user_confirm'] = '';
 
-                if(
-                    $this->request->has('place_name', 'post') &&
-                    $this->request->has('user_fulname', 'post') &&
-                    $this->request->has('user_email', 'post') &&
-                    $this->request->has('user_password', 'post') &&
-                    $this->request->has('user_confirm', 'post')
-                ){
-//                    if(){
+                if($this->request->has('register_data', 'post')){
+                    $json = array();
+                    $json['error'] = '';
+                    if(preg_match("#^([a-zA-Z]*[0-9]*\.*-*_*)+@([a-zA-Z]*\.(a-zA-Z){2-3})$#")){
+                        $json['data'] = 'success';
+                        $jsonAnswer = json_encode($json['data']);
 
-//                    }
+                        header('Content-Type: application/json; charset=UTF-8');
+                        echo $jsonAnswer;
+                    }
+                    else{
+                        $json['error'] = 'Некорректный E-mail адрес!';
+
+                        $jsonAnswer = json_encode($json['error']);
+
+                        header('Content-Type: application/json; charset=UTF-8');
+                        echo $jsonAnswer;
+                    }
                 }
 
                 $data['header'] = $this->load->controller('common/header');

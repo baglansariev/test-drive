@@ -12,8 +12,31 @@ $(function () {
        var user_confirm = $('[name="user_confirm"]');
 
        if(place_name.val() && user_fullname.val() && user_email.val() && user_password.val() && user_confirm.val()){
-           $('.form-message-alert').remove();
-           console.log(place_name.val() + ' ' + user_fullname.val() + ' ' + user_email.val() + ' ' + user_password.val() + ' ' + user_confirm.val());
+           if(user_password.val() === user_confirm.val()){
+               var register_data = {
+                   place_name: place_name.val(),
+                   user_fullname: user_fullname.val(),
+                   user_email: user_email.val(),
+                   user_password: user_password.val(),
+                   user_confirm: user_confirm.val(),
+               };
+
+               $.ajax({
+                   type: "POST",
+                   url: "test-drive:8080/register",
+                   data: register_data,
+                   dataType: "json",
+                   success: function(ans){
+                       // if(ans.error){
+                       //
+                       // }
+                       console.log(ans);
+                   },
+               });
+           }
+           else{
+               user_password.before('<span class="form-message-alert">Пароли не совпадают</span>');
+           }
        }
        else{
            if(!place_name.val()){
