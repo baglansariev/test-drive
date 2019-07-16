@@ -6,6 +6,13 @@
 	{
 		public function index()
 		{
-			return $this->load->view('common/header');
+		    $data = array();
+            $data['account_text'] = 'Кабинет';
+
+		    if($this->session->has('user_fullname')){
+                $data['account_text'] = $this->session->get('user_fullname');
+            }
+
+			return $this->load->view('common/header', $data);
 		}
 	}

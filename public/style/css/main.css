@@ -49,6 +49,12 @@ main{
 .user-links a:last-of-type{
 	margin-right: 0;
 }
+.fa-sort-down{
+	margin-left: 5px;
+}
+.fa-user-alt{
+	margin-right: 5px;
+}
 .header-mid{
 	height: 90px;
 	background-color: #c90909;
@@ -261,6 +267,15 @@ color: #444;
 }
 .buttons-block input[type="submit"]:hover{
 	background-color: #F52727;
+}
+.photo-add-link{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+.photo-add{
+	padding: 5px 10px;
+
 }
 .places{
 	display: flex;

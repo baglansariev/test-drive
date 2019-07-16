@@ -20,11 +20,23 @@
             }
             return false;
         }
-        public function tester($user_email)
+
+        public function getUser($user_email)
         {
-            $query = "SELECT id AS user_id FROM " . DB_PREFIX . "users WHERE email = '" . $user_email . "'";
-            $result = $this->db->getRow($query);
-            return $result;
+            $query = "SELECT * FROM " . DB_PREFIX . "users WHERE email = '" . $user_email . "'";
+            return $this->db->getRow($query);
+        }
+
+        public function getUserData($user_email)
+        {
+            $query = "SELECT pk_users.email AS user_email, pk_users.name AS user_fullname, pk_places.name AS place_name, pk_places.id AS place_id, pk_places.user_id FROM " . DB_PREFIX . "users LEFT JOIN " . DB_PREFIX . "places ON pk_users.id = pk_places.user_id WHERE email = '" . $user_email . "'";
+            return $this->db->getRow($query);
+        }
+
+        public function getUserFullData($user_email)
+        {
+            $query = "SELECT pk_users.email AS user_email, pk_users.name AS user_fullname, pk_users.status AS user_status, pk_places.name AS place_name, pk_places.id AS place_id, pk_places.user_id FROM " . DB_PREFIX . "users LEFT JOIN " . DB_PREFIX . "places ON pk_users.id = pk_places.user_id WHERE email = '" . $user_email . "'";
+            return $this->db->getRow($query);
         }
 
         public function emailCHeck($email)

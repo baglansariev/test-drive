@@ -39,6 +39,46 @@
 
                 $this->view->asset->setTitle('Вход');
 
+                $login_model = $this->load->model('account/account');
+                $data = array();
+                $data['login_msg'] = '';
+                $data['login_msg_class'] = 'form-message-alert';
+
+                if(!empty($this->request->post)){
+                    if($this->request->has('user_email', 'post') && $this->request->has('user_password', 'post')){
+                        $user_email = $this->request->post['user_email'];
+                        $user_password = $this->request->post['user_password'];
+
+                        if(preg_match("#^([a-zA-Z]*[0-9]*\.*-*_*)+@([a-zA-Z]*\.[a-zA-Z]{2,3})$#", $user_email)){
+                            $user = $login_model->getUser($user_email);
+
+                            if($user){
+                                if(password_verify($user_password, $user['password'])){
+                                    $this->session->set([
+                                        'auth' => true,
+                                        'user_email' => $user['email'],
+                                        'user_status' => $user['status'],
+                                        'user_fullname' => $user['name'],
+                                    ]);
+                                    header('Location: /account');
+                                }
+                                else{
+                                    $data['login_msg'] = 'Неправильный логин или пароль!';
+                                }
+                            }
+                            else{
+                                $data['login_msg'] = 'Неправильный логин или пароль!';
+                            }
+                        }
+                        else{
+                            $data['login_msg'] = 'Некорректный E-mail адрес!';
+                        }
+                    }
+                    else{
+                        $data['login_msg'] = 'Заполните все поля';
+                    }
+                }
+
                 $data['header'] = $this->load->controller('common/header');
                 $data['footer'] = $this->load->controller('common/footer');
                 $this->view->response('Account/login', $data);
@@ -117,6 +157,17 @@
             else{
                 header('Location: /account');
             }
+        }
+
+        public function logoutAction()
+        {
+            if($this->session->has('auth')){
+                $this->session->del('auth');
+                $this->session->del('user_email');
+                $this->session->del('user_status');
+                $this->session->del('user_fullname');
+            }
+            header('Location: /login');
         }
 
         public function agreementAction()

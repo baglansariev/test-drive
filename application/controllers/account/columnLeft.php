@@ -6,6 +6,10 @@
     {
         public function index()
         {
-            return $this->load->view('Account/column_left');
+            $data = array();
+            if($this->session->has('user_fullname')){
+                $data['user_fullname'] = $this->session->get('user_fullname');
+            }
+            return $this->load->view('Account/column_left', $data);
         }
     }

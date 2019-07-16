@@ -16,6 +16,10 @@
             'controller' => 'account',
             'action' => 'index',
         ],
+        'logout' => [
+            'controller' => 'account',
+            'action' => 'logout',
+        ],
         'agreement' => [
             'controller' => 'account',
             'action' => 'agreement',

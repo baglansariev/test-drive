@@ -39,7 +39,7 @@
 
         public function del($key)
         {
-            unset($key);
+            unset($_SESSION[$key]);
         }
 
         public function clear()

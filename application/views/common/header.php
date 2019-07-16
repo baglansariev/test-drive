@@ -10,7 +10,7 @@
 					</a>
 					<a href="/login">
 						<i class="fas fa-user-alt"></i>
-						Кабинет
+						<?php echo $account_text ?>
 					</a>
 				</div>
 			</div>
