@@ -5,6 +5,7 @@
             <p class="registration-form-heading">
                 Регистрация
             </p>
+            <i class="form-message-success"><?php echo $register_msg ?></i>
             <form action="" method="post">
                 <div class="registration-input-block">
                     <p class="registration-input-title">Название заведения:</p>

@@ -55,12 +55,14 @@
                 $this->view->asset->setTitle('Регистрация');
                 $this->view->asset->setJs('/public/style/js/forms.js');
 
+                $register_model = $this->load->model('account/account');
                 $data = array();
 
                 $data['place_name_msg'] = '';
                 $data['user_fullname_msg'] = '';
                 $data['user_email_msg'] = '';
                 $data['user_password_msg'] = '';
+                $data['register_msg'] = '';
 
                 if(!empty($this->request->post)){
                     if($this->request->has('place_name', 'post') &&
@@ -69,13 +71,30 @@
                         $this->request->has('user_password', 'post') &&
                         $this->request->has('user_confirm', 'post')
                     ){
+                        $place_name = $this->request->post['place_name'];
+                        $user_fullname = $this->request->post['user_fullname'];
+                        $user_email = $this->request->post['user_email'];
+                        $user_password = $this->request->post['user_password'];
+                        $user_confirm = $this->request->post['user_confirm'];
 
-                        if(preg_match("#^([a-zA-Z]*[0-9]*\.*-*_*)+@([a-zA-Z]*\.[a-zA-Z]{2,3})$#", $this->request->post['user_email'])){
-                            if($this->request->post['user_password'] == $this->request->post['user_confirm']){
-                                devPrint('YES');
+                        if(preg_match("#^([a-zA-Z]*[0-9]*\.*-*_*)+@([a-zA-Z]*\.[a-zA-Z]{2,3})$#", $user_email)){
+                            if(!$register_model->emailCheck($user_email)){
+                                if($user_password == $user_confirm){
+                                    $user_password = password_hash($user_password, PASSWORD_DEFAULT);
+
+                                    if($register_model->registerNewUser($place_name, $user_fullname, $user_email, $user_password)){
+                                        $data['register_msg'] = "Вы успешно зарегистрировались!";
+                                    }
+                                    else{
+                                        $data['register_msg'] = "Произошла ошибка. Попробуйте заново.";
+                                    }
+                                }
+                                else{
+                                    $data['user_password_msg'] = 'Пароли не совпадают';
+                                }
                             }
                             else{
-                                $data['user_password_msg'] = 'Пароли не совпадают';
+                                $data['user_email_msg'] = 'Такой E-mail адрес уже зарегистрирован';
                             }
                         }
                         else{
