@@ -1,6 +1,6 @@
 <?php
-namespace application\controllers\account;
-use application\core\engine\Controller;
+namespace controllers\account;
+use core\engine\Controller;
 
 class Agreement extends Controller
 {

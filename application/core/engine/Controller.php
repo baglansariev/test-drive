@@ -1,10 +1,11 @@
 <?php
-	namespace application\core\engine;
+	namespace core\engine;
 
-	use application\core\engine\View;
-	use application\core\engine\Loader;
-	use application\core\lib\Request;
-	use application\core\lib\Session;
+	use core\engine\View;
+	use core\engine\Loader;
+	use core\lib\Request;
+	use core\lib\Session;
+	use core\lib\YandexDisk;
 
 	abstract class Controller
 	{
@@ -12,6 +13,7 @@
 		public $load;
 		public $view;
 		public $session;
+		public $yandexDisk;
 
 		public function __construct()
 		{
@@ -19,5 +21,6 @@
 			$this->load = new Loader;
 			$this->view = new View;
 			$this->session = new Session;
+			$this->yandexDisk = new YandexDisk;
 		}
 	}

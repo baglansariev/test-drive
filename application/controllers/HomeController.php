@@ -1,7 +1,7 @@
 <?php
-	namespace application\controllers;
+	namespace controllers;
 
-	use application\core\engine\Controller;
+	use core\engine\Controller;
 
 	class HomeController extends Controller
 	{

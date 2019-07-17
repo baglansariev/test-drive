@@ -1,6 +1,6 @@
 <?php
-    namespace application\controllers;
-    use application\core\engine\Controller;
+    namespace controllers;
+    use core\engine\Controller;
 
     class PlaceController extends Controller
     {

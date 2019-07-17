@@ -24,6 +24,14 @@
             'controller' => 'account',
             'action' => 'agreement',
         ],
+        'gallery' => [
+            'controller' => 'account',
+            'action' => 'gallery',
+        ],
+        'upload' => [
+            'controller' => 'account',
+            'action' => 'upload',
+        ],
         'places' => [
             'controller' => 'place',
             'action' => 'placeList',

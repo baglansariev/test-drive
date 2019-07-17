@@ -629,6 +629,11 @@ input::-moz-placeholder{
 	padding-bottom: 10px;
 	margin-bottom: 30px;
 }
+.account-page-content{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+}
 
 
 .account-personal-data{
@@ -646,4 +651,37 @@ input::-moz-placeholder{
 	border-radius: 5px;
 	border: 1px solid #cdcdcd;
 	padding: 5px 0;
+}
+.account-albums{
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+}
+.account-album{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	padding: 20px;
+	margin-bottom: 30px;
+	width: 30%;
+	border: 3px solid #cdcdcd;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	transition: all ease 0.4s;
+}
+.account-album:hover{
+	border-color: #c90909;
+}
+.account-album .fa-folder{
+	font-size: 100px;
+	color: #c90909;
+}
+.account-album .fa-images{
+	font-size: 100px;
+	color: #c90909;
+}
+.account-album-title{
+	font-size: 15px;
+	font-weight: bold;
 }

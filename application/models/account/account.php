@@ -1,6 +1,6 @@
 <?php
-    namespace application\models\account;
-    use application\core\engine\Model;
+    namespace models\account;
+    use core\engine\Model;
 
     class Account extends Model
     {

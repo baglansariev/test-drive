@@ -1,5 +1,5 @@
 <?php
-	namespace application\core\engine;
+	namespace core\engine;
 
 	class Loader
 	{
@@ -29,7 +29,7 @@
 				$parts = implode('\\', $parts);
 			}
 
-			$path = 'application\controllers\\'.$parts;
+			$path = 'controllers\\'.$parts;
 
 			if(class_exists($path)){
 				$controller =  new $path;
@@ -57,7 +57,7 @@
 				$parts = implode('\\', $parts);
 			}
 
-			$path = 'application\models\\'.$parts;
+			$path = 'models\\'.$parts;
 
 			if(class_exists($path)){
 				return  new $path;

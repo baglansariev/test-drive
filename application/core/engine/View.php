@@ -1,7 +1,7 @@
 <?php
-	namespace application\core\engine;
+	namespace core\engine;
 
-	use \application\core\lib\Asset;
+	use core\lib\Asset;
 
 	class View
 	{

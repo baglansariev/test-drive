@@ -1,5 +1,5 @@
 <?
-	namespace application\core\lib;
+	namespace core\lib;
 
 	class Asset
 	{

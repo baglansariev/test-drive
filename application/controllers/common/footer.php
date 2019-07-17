@@ -1,6 +1,6 @@
 <?php
-	namespace application\controllers\common;
-	use application\core\engine\Controller;
+	namespace controllers\common;
+	use core\engine\Controller;
 
 	class Footer extends Controller
 	{

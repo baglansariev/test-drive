@@ -1,6 +1,6 @@
 <?php
-    namespace application\controllers;
-    use application\core\engine\Controller;
+    namespace controllers;
+    use core\engine\Controller;
 
     class AccountController extends Controller
     {
@@ -176,9 +176,39 @@
 
             $data['account_content'] = $this->load->controller('account/agreement');
 
-            $data['column_left'] = $this->load->controller('Account/columnLeft');
-            $data['header'] = $this->load->controller('common/header');
-            $data['footer'] = $this->load->controller('common/footer');
+            if(isset($this->request->post['account_tab'])){
+                $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
+
+                header('Content-Type: application/json; charset=UTF-8');
+                echo $json;
+            }
+            else{
+                header('Location: /');
+            }
+        }
+
+        public function galleryAction()
+        {
+            $this->view->asset->setTitle('Моя галлерея');
+
+            $data['account_content'] = $this->load->controller('account/myGallery');
+
+            if(isset($this->request->post['account_tab'])){
+                $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
+
+                header('Content-Type: application/json; charset=UTF-8');
+                echo $json;
+            }
+            else{
+                header('Location: /');
+            }
+        }
+
+        public function uploadAction()
+        {
+            $this->view->asset->setTitle('Новый альбом');
+
+            $data['account_content'] = $this->load->controller('account/upload');
 
             if(isset($this->request->post['account_tab'])){
                 $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
@@ -191,3 +221,4 @@
             }
         }
     }
+

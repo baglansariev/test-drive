@@ -1,7 +1,7 @@
 <?
-    namespace application\core\lib;
+    namespace core\lib;
 
-    use application\core\lib\Session;
+    use core\lib\Session;
 
     class Request
     {

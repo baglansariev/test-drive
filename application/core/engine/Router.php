@@ -1,8 +1,8 @@
 <?php
-	namespace application\core\engine;
+	namespace core\engine;
 
-	use application\core\engine\View;
-	use application\core\lib\Request;
+	use core\engine\View;
+	use core\lib\Request;
 
 	class Router
 	{
@@ -32,7 +32,7 @@
 	    public function run()
 	    {
 	    	if($this->match()){
-	    		$path = 'application\controllers\\'.ucfirst($this->params['controller']).'Controller';
+	    		$path = 'controllers\\'.ucfirst($this->params['controller']).'Controller';
 	    		$action = $this->params['action'].'Action';
 	    		$controller = new $path();
 	    		$controller->$action();
