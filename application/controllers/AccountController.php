@@ -4,6 +4,8 @@
 
     class AccountController extends Controller
     {
+        public $resource;
+
         public function indexAction()
         {
             if(!$this->session->has('user')) {
@@ -46,15 +48,19 @@
                     $user_password = $this->request->post['user_password'];
 
                     if($this->form->isEmail($user_email)){
-                        $user = $login_model->getUser($user_email);
+                        $user = $login_model->getUserFullData($user_email);
 
-                        if($user && password_verify($user_password, $user['password'])){
+                        if($user && password_verify($user_password, $user['user_password'])){
                             $this->session->set('user', [
                                 'auth' => true,
-                                'email' => $user['email'],
-                                'status' => $user['status'],
-                                'fullname' => $user['name'],
+                                'email' => $user['user_email'],
+                                'status' => $user['user_status'],
+                                'fullname' => $user['user_fullname'],
+                                'place_name' => $user['place_name'],
                             ]);
+
+                            // Вход в именную папку пользователя в Яндекс Диск
+                            $this->resource = $user['place_name'];
                             $this->response->redirect('/account');
                         }
                         else{
@@ -107,6 +113,10 @@
 
                                 if($register_model->registerNewUser($place_name, $fullname, $email, $password)){
                                     $data['register_msg'] = $this->form->success_msg['register'];
+
+                                    // При регистрации создается корневая папка пользователя в Яндекс Диск
+                                    $this->resource = $this->yandexDisk->getResource($place_name);
+                                    $this->resource->create($place_name);
                                 }
                             }
                             else{
@@ -172,18 +182,24 @@
             }
         }
 
-        public function uploadAction()
+        public function newAlbumAction()
         {
             $this->view->asset->setTitle('Новый альбом');
 
             $data['account_content'] = $this->load->controller('account/upload');
+            $data['column_left'] = $this->load->controller('account/columnLeft');
+            $data['header'] = $this->load->controller('common/header');
+            $data['footer'] = $this->load->controller('common/footer');
 
-            if($this->request->has('account_tab', 'post')){
-                $this->response->addHeader('Content-Type: application/json; charset=UTF-8');
-                $this->response->output(json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG));
-            }
-            else{
-                $this->view->response('Account/account', $data);
+            $this->view->response('Account/account', $data);
+        }
+
+        public function fileUploadAction()
+        {
+            if($this->request->has('album_name', 'post') && $this->request->has('album_files', 'files')){
+//                header('Content-type: application/json');
+//                echo json_encode($this->request->post['album_name']);
+                echo $this->request->post['album_name'];
             }
         }
     }

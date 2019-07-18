@@ -30,6 +30,11 @@
 			return true;
 		}
 
+		public function escapeString($string)
+        {
+            return mysqli_real_escape_string($this->link, $string);
+        }
+
 
 		private function setLink()
 		{

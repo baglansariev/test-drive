@@ -24,13 +24,17 @@
             'controller' => 'account',
             'action' => 'agreement',
         ],
-        'gallery' => [
+        'new-album' => [
             'controller' => 'account',
-            'action' => 'gallery',
+            'action' => 'newAlbum',
         ],
         'upload' => [
             'controller' => 'account',
-            'action' => 'upload',
+            'action' => 'fileUpload',
+        ],
+        'gallery' => [
+            'controller' => 'account',
+            'action' => 'gallery',
         ],
         'places' => [
             'controller' => 'place',
@@ -38,6 +42,10 @@
         ],
         'place-page' => [
             'controller' => 'place',
+            'action' => 'index',
+        ],
+        'test' => [
+            'controller' => 'test',
             'action' => 'index',
         ],
 	];

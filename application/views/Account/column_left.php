@@ -24,7 +24,7 @@
     </a>
 </ul>
 <div class="photo-add-link">
-    <a href="" class="menu-point photo-add btn-danger" data-url="/upload">Добавить альбом</a>
+    <a href="/upload" class="photo-add btn-danger">Добавить альбом</a>
 </div>
 
 <script type="text/javascript">

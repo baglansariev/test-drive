@@ -9,7 +9,7 @@
 		    $data = array();
             $data['account_text'] = 'Кабинет';
 
-		    if($this->session->has('user_fullname')){
+		    if($this->session->has('user')){
                 $data['account_text'] = $this->session->get('user')['fullname'];
             }
 

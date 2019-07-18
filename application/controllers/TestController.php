@@ -5,9 +5,11 @@
 
 	class TestController extends Controller
 	{
-		public function index()
+		public function indexAction()
 		{
-			$data['truck'] = ['a', 'b', 'c'];
-			return $this->load->view('Test/test', $data);
+			$baseResource = $this->yandexDisk->getResource($this->session->get('user')['place_name']);
+
+
+
 		}
 	}

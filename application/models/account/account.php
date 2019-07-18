@@ -35,7 +35,7 @@
 
         public function getUserFullData($user_email)
         {
-            $query = "SELECT pk_users.email AS user_email, pk_users.name AS user_fullname, pk_users.status AS user_status, pk_places.name AS place_name, pk_places.id AS place_id, pk_places.user_id FROM " . DB_PREFIX . "users LEFT JOIN " . DB_PREFIX . "places ON pk_users.id = pk_places.user_id WHERE email = '" . $user_email . "'";
+            $query = "SELECT pk_users.email AS user_email, pk_users.name AS user_fullname, pk_users.status AS user_status, pk_users.password as user_password, pk_places.name AS place_name, pk_places.id AS place_id, pk_places.user_id FROM " . DB_PREFIX . "users LEFT JOIN " . DB_PREFIX . "places ON pk_users.id = pk_places.user_id WHERE email = '" . $user_email . "'";
             return $this->db->getRow($query);
         }
 
