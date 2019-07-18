@@ -6,168 +6,140 @@
     {
         public function indexAction()
         {
-            if($this->session->has('auth') && $this->session->get('auth')){
+            if(!$this->session->has('user')) {
+                $this->response->redirect('/login');
+            }
 
-                $this->view->asset->setTitle('Личный кабинет');
+            $this->view->asset->setTitle('Личный кабинет');
 
-                $data = array();
-                $data['account_content'] = $this->load->controller('Account/personalData');
+            $data = array();
+            $data['account_content'] = $this->load->controller('Account/personalData');
+            $data['column_left'] = $this->load->controller('Account/columnLeft');
+            $data['header'] = $this->load->controller('common/header');
+            $data['footer'] = $this->load->controller('common/footer');
 
-                $data['column_left'] = $this->load->controller('Account/columnLeft');
-                $data['header'] = $this->load->controller('common/header');
-                $data['footer'] = $this->load->controller('common/footer');
-
-                if(isset($this->request->post['account_tab'])){
-                    $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
-
-                    header('Content-Type: application/json; charset=UTF-8');
-                    echo $json;
-                }
-                else{
-                    $this->view->response('Account/account', $data);
-                }
+            if($this->request->has('account_tab', 'post')){
+                $this->response->addHeader('Content-Type: application/json; charset=UTF-8');
+                $this->response->output(json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG));
             }
             else{
-                header('Location: /login');
+                $this->view->response('Account/account', $data);
             }
 
         }
 
         public function loginAction()
         {
-            if(!$this->session->has('auth')){
+            if($this->session->has('user')){
+                $this->response->redirect('/account');
+            }
 
-                $this->view->asset->setTitle('Вход');
+            $this->view->asset->setTitle('Вход');
 
-                $login_model = $this->load->model('account/account');
-                $data = array();
-                $data['login_msg'] = '';
-                $data['login_msg_class'] = 'form-message-alert';
+            $login_model = $this->load->model('account/account');
+            $data = array();
+            $data['login_msg_class'] = 'form-message-alert';
 
-                if(!empty($this->request->post)){
-                    if($this->request->has('user_email', 'post') && $this->request->has('user_password', 'post')){
-                        $user_email = $this->request->post['user_email'];
-                        $user_password = $this->request->post['user_password'];
+            if(!empty($this->request->post)){
+                if($this->request->has('user_email', 'post') && $this->request->has('user_password', 'post')){
+                    $user_email = $this->request->post['user_email'];
+                    $user_password = $this->request->post['user_password'];
 
-                        if(preg_match("#^([a-zA-Z]*[0-9]*\.*-*_*)+@([a-zA-Z]*\.[a-zA-Z]{2,3})$#", $user_email)){
-                            $user = $login_model->getUser($user_email);
+                    if($this->form->isEmail($user_email)){
+                        $user = $login_model->getUser($user_email);
 
-                            if($user){
-                                if(password_verify($user_password, $user['password'])){
-                                    $this->session->set([
-                                        'auth' => true,
-                                        'user_email' => $user['email'],
-                                        'user_status' => $user['status'],
-                                        'user_fullname' => $user['name'],
-                                    ]);
-                                    header('Location: /account');
-                                }
-                                else{
-                                    $data['login_msg'] = 'Неправильный логин или пароль!';
-                                }
-                            }
-                            else{
-                                $data['login_msg'] = 'Неправильный логин или пароль!';
-                            }
+                        if($user && password_verify($user_password, $user['password'])){
+                            $this->session->set('user', [
+                                'auth' => true,
+                                'email' => $user['email'],
+                                'status' => $user['status'],
+                                'fullname' => $user['name'],
+                            ]);
+                            $this->response->redirect('/account');
                         }
                         else{
-                            $data['login_msg'] = 'Некорректный E-mail адрес!';
+                            $data['login_msg'] = $this->form->error_msg['login_pass'];
                         }
                     }
                     else{
-                        $data['login_msg'] = 'Заполните все поля';
+                        $data['login_msg'] = $this->form->error_msg['is_email'];
                     }
                 }
+                else{
+                    $data['login_msg'] = $this->form->error_msg['all_fields'];
+                }
+            }
 
-                $data['header'] = $this->load->controller('common/header');
-                $data['footer'] = $this->load->controller('common/footer');
-                $this->view->response('Account/login', $data);
-            }
-            else{
-                header('Location: /account');
-            }
+            $data['header'] = $this->load->controller('common/header');
+            $data['footer'] = $this->load->controller('common/footer');
+            $this->view->response('Account/login', $data);
         }
 
         public function registerAction()
         {
-            if(!$this->session->has('auth')){
+            if($this->session->has('user')){
+                $this->response->redirect('/account');
+            }
 
-                $this->view->asset->setTitle('Регистрация');
-                $this->view->asset->setJs('/public/style/js/forms.js');
+            $this->view->asset->setTitle('Регистрация');
+            $this->view->asset->setJs('/public/style/js/forms.js');
 
-                $register_model = $this->load->model('account/account');
-                $data = array();
+            $register_model = $this->load->model('account/account');
+            $data = array();
 
-                $data['place_name_msg'] = '';
-                $data['user_fullname_msg'] = '';
-                $data['user_email_msg'] = '';
-                $data['user_password_msg'] = '';
-                $data['register_msg'] = '';
+            if(!empty($this->request->post)){
+                if($this->request->has(['user' => 'place_name'], 'post') &&
+                    $this->request->has(['user' => 'fullname'], 'post') &&
+                    $this->request->has(['user' => 'email'], 'post') &&
+                    $this->request->has(['user' => 'password'], 'post') &&
+                    $this->request->has(['user' => 'confirm'], 'post')
+                ){
+                    foreach ($this->request->post['user'] as $key => $val) {
+                        $$key = $this->request->post['user'][$key];
+                    }
 
-                if(!empty($this->request->post)){
-                    if($this->request->has('place_name', 'post') &&
-                        $this->request->has('user_fullname', 'post') &&
-                        $this->request->has('user_email', 'post') &&
-                        $this->request->has('user_password', 'post') &&
-                        $this->request->has('user_confirm', 'post')
-                    ){
-                        $place_name = $this->request->post['place_name'];
-                        $user_fullname = $this->request->post['user_fullname'];
-                        $user_email = $this->request->post['user_email'];
-                        $user_password = $this->request->post['user_password'];
-                        $user_confirm = $this->request->post['user_confirm'];
+                    if($this->form->isEmail($email)){
+                        if(!$register_model->hasEmail($email) && !$register_model->hasPlace($place_name)){
+                            if($password == $confirm){
+                                $password = password_hash($password, PASSWORD_DEFAULT);
 
-                        if(preg_match("#^([a-zA-Z]*[0-9]*\.*-*_*)+@([a-zA-Z]*\.[a-zA-Z]{2,3})$#", $user_email)){
-                            if(!$register_model->emailCheck($user_email)){
-                                if($user_password == $user_confirm){
-                                    $user_password = password_hash($user_password, PASSWORD_DEFAULT);
+                                $data['register_msg'] = $this->form->error_msg['register'];
 
-                                    if($register_model->registerNewUser($place_name, $user_fullname, $user_email, $user_password)){
-                                        $data['register_msg'] = "Вы успешно зарегистрировались!";
-                                    }
-                                    else{
-                                        $data['register_msg'] = "Произошла ошибка. Попробуйте заново.";
-                                    }
-                                }
-                                else{
-                                    $data['user_password_msg'] = 'Пароли не совпадают';
+                                if($register_model->registerNewUser($place_name, $fullname, $email, $password)){
+                                    $data['register_msg'] = $this->form->success_msg['register'];
                                 }
                             }
                             else{
-                                $data['user_email_msg'] = 'Такой E-mail адрес уже зарегистрирован';
+                                $data['password_msg'] = $this->form->error_msg['password_match'];
                             }
                         }
                         else{
-                            $data['user_email_msg'] = 'Некорректный E-mail адрес';
+                            $data['email_msg'] = $this->form->error_msg['has_email'];
+                            $data['place_name_msg'] = $this->form->error_msg['has_place_name'];
                         }
                     }
                     else{
-                        !$this->request->has('place_name', 'post')? $data['place_name_msg'] = 'Поле "название заведения" не должно быть пустым' : $data['place_name_msg'] = '';
-                        !$this->request->has('place_name', 'post')? $data['user_fullname_msg'] = 'Поле "Ф.И.О. ответственного лица" не должно быть пустым' : $data['user_fullname_msg'] = '';
-                        !$this->request->has('place_name', 'post')? $data['user_email_msg'] = 'Поле "E-mail" не должно быть пустым' : $data['user_email_msg'] = '';
-                        !$this->request->has('place_name', 'post')? $data['user_password_msg'] = 'Поле "Пароль" не должно быть пустым' : $data['user_password_msg'] = '';
-                        !$this->request->has('place_name', 'post')? $data['user_confirm_msg'] = 'Поле "Подтверждение пароля" не должно быть пустым' : $data['user_confirm_msg'] = '';
+                        $data['email_msg'] = $this->form->error_msg['is_email'];
                     }
                 }
+                else{
+                    foreach ($this->request->post['user'] as $key => $val) {
+                        if(!$this->request->has(['user' => $key])) $data[$key . '_msg'] = $this->form->error_msg[$key . '_empty'];
+                    }
+                }
+            }
 
-                $data['header'] = $this->load->controller('common/header');
-                $data['footer'] = $this->load->controller('common/footer');
-                $this->view->response('Account/register', $data);
-            }
-            else{
-                header('Location: /account');
-            }
+            $data['header'] = $this->load->controller('common/header');
+            $data['footer'] = $this->load->controller('common/footer');
+            $this->view->response('Account/register', $data);
         }
 
         public function logoutAction()
         {
-            if($this->session->has('auth')){
-                $this->session->del('auth');
-                $this->session->del('user_email');
-                $this->session->del('user_status');
-                $this->session->del('user_fullname');
+            if($this->session->has('user')){
+                $this->session->del('user');
             }
-            header('Location: /login');
+            $this->response->redirect('/login');
         }
 
         public function agreementAction()
@@ -176,14 +148,12 @@
 
             $data['account_content'] = $this->load->controller('account/agreement');
 
-            if(isset($this->request->post['account_tab'])){
-                $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
-
-                header('Content-Type: application/json; charset=UTF-8');
-                echo $json;
+            if($this->request->has('account_tab', 'post')){
+                $this->response->addHeader('Content-Type: application/json; charset=UTF-8');
+                $this->response->output(json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG));
             }
             else{
-                header('Location: /');
+                $this->view->response('Account/account', $data);
             }
         }
 
@@ -193,14 +163,12 @@
 
             $data['account_content'] = $this->load->controller('account/myGallery');
 
-            if(isset($this->request->post['account_tab'])){
-                $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
-
-                header('Content-Type: application/json; charset=UTF-8');
-                echo $json;
+            if($this->request->has('account_tab', 'post')){
+                $this->response->addHeader('Content-Type: application/json; charset=UTF-8');
+                $this->response->output(json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG));
             }
             else{
-                header('Location: /');
+                $this->view->response('Account/account', $data);
             }
         }
 
@@ -210,14 +178,12 @@
 
             $data['account_content'] = $this->load->controller('account/upload');
 
-            if(isset($this->request->post['account_tab'])){
-                $json = json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG);
-
-                header('Content-Type: application/json; charset=UTF-8');
-                echo $json;
+            if($this->request->has('account_tab', 'post')){
+                $this->response->addHeader('Content-Type: application/json; charset=UTF-8');
+                $this->response->output(json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG));
             }
             else{
-                header('Location: /');
+                $this->view->response('Account/account', $data);
             }
         }
     }

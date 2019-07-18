@@ -39,9 +39,17 @@
             return $this->db->getRow($query);
         }
 
-        public function emailCHeck($email)
+        public function hasEmail($email)
         {
             $query = "SELECT COUNT(*) AS 'count' FROM " . DB_PREFIX . "users WHERE email = '" . $email . "'";
+            $result = $this->db->getRow($query);
+
+            return $result['count'];
+        }
+
+        public function hasPlace($place_name)
+        {
+            $query = "SELECT COUNT(*) AS 'count' FROM " . DB_PREFIX . "places WHERE name = '" . $place_name . "'";
             $result = $this->db->getRow($query);
 
             return $result['count'];

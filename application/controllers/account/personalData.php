@@ -9,7 +9,7 @@
             $account_model = $this->load->model('account/account');
             $data = array();
 
-            $user = $account_model->getUserData($this->session->get('user_email'));
+            $user = $account_model->getUserData($this->session->get('user')['email']);
             $data['user_data'] = array();
 
             if($user){

@@ -27,6 +27,7 @@
 		public function changeData($query)
 		{
 			mysqli_query($this->link, $query) or die(mysqli_error($this->link));
+			return true;
 		}
 
 

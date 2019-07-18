@@ -5,7 +5,7 @@
             <p class="login-form-heading">
                 Авторизация
             </p>
-            <i class="<?php echo $login_msg_class ?>"><?php echo $login_msg ?></i>
+            <i class="<?php echo $login_msg_class ?>"><?php if(isset($login_msg)) echo $login_msg ?></i>
             <form action="" method="post">
                 <div class="login-block">
                     <i class="fas fa-user"></i>

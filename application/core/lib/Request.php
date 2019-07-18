@@ -40,8 +40,18 @@
 
         public function has($key, $request_method = 'request')
         {
-            if(isset($this->$request_method[$key])){
-                return true;
+
+            if(is_array($key)){
+                foreach ($key as $item => $val) {
+                    if(!empty($this->$request_method[$item]) && !empty($this->$request_method[$item][$val])){
+                        return true;
+                    }
+                }
+            }
+            else{
+                if(!empty($this->$request_method[$key])){
+                    return true;
+                }
             }
             return false;
 
