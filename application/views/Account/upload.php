@@ -16,11 +16,13 @@
 <script>
     $('#album_btn').click(function (e) {
         e.preventDefault();
+        let formData = new FormData();
 
         $.ajax({
             type: "POST",
             url: "/upload",
-            data: {'album_name' : $("[name=album_files]").val()},
+            data: formData,
+            cache: false,
             // dataType: "json",
             success: function (ans) {
                 // console.log($("[name=album_name]").val());
