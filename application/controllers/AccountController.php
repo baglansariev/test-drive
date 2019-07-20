@@ -196,11 +196,11 @@
 
         public function fileUploadAction()
         {
-            if($this->request->has('album_name', 'post') && $this->request->has('album_files', 'files')){
+//            if($this->request->has('test', 'post')){
 //                header('Content-type: application/json');
-//                echo json_encode($this->request->post['album_name']);
-                echo $this->request->post['album_name'];
-            }
+                echo json_encode($this->request->files['album_files']);
+//                echo $this->request->post['album_name'];
+//            }
         }
     }
 
