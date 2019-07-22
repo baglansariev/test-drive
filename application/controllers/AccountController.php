@@ -196,11 +196,16 @@
 
         public function fileUploadAction()
         {
-//            if($this->request->has('test', 'post')){
-//                header('Content-type: application/json');
-                echo json_encode($this->request->files['album_files']);
-//                echo $this->request->post['album_name'];
-//            }
+            if($this->request->has('album_name', 'post') && $this->request->has('album_files', 'files')){
+               foreach($this->request->files['album_files']['name'] as $key => $val) {
+                   if ($val) {
+                       move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'][$key]);
+                       echo 'YES';
+                   } else {
+                       echo 'NOT';
+                   }
+               }
+            }
         }
     }
 
