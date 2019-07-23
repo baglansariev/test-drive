@@ -7,7 +7,7 @@
         </p>
         <p class="account-form-block">
             Главное фото:
-            <input name="album_main_file" type="file" value="" required>
+            <input id="main_file_upload" name="album_main_file" type="file" value="" required>
         </p>
         <p class="account-file-block">
             Дополнительные фото:
@@ -97,6 +97,10 @@
 
             $(droppedFiles).each(function () {
                 ajaxData.append($('#file-upload').attr('name'), this);
+            });
+
+            $(droppedFiles).each(function () {
+                ajaxData.append($('#main_file-upload').attr('name'), this);
             });
             // console.log('test');
 

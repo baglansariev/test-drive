@@ -4,8 +4,6 @@
 
     class AccountController extends Controller
     {
-        public $resource;
-
         public function indexAction()
         {
             if(!$this->session->has('user')) {
@@ -53,14 +51,15 @@
                         if($user && password_verify($user_password, $user['user_password'])){
                             $this->session->set('user', [
                                 'auth' => true,
+                                'id' => $user['user_id'],
                                 'email' => $user['user_email'],
                                 'status' => $user['user_status'],
                                 'fullname' => $user['user_fullname'],
                                 'place_name' => $user['place_name'],
+                                // Вход в именную папку пользователя в Яндекс Диск
+                                'resource' => $this->yandexDisk->getResource($user['place_name']),
                             ]);
 
-                            // Вход в именную папку пользователя в Яндекс Диск
-                            $this->resource = $user['place_name'];
                             $this->response->redirect('/account');
                         }
                         else{
@@ -115,8 +114,8 @@
                                     $data['register_msg'] = $this->form->success_msg['register'];
 
                                     // При регистрации создается корневая папка пользователя в Яндекс Диск
-                                    $this->resource = $this->yandexDisk->getResource($place_name);
-                                    $this->resource->create($place_name);
+                                    $resource = $this->yandexDisk->getResource($place_name);
+                                    $resource->create($place_name);
                                 }
                             }
                             else{
@@ -196,15 +195,47 @@
 
         public function fileUploadAction()
         {
-            if($this->request->has('album_name', 'post') && $this->request->has('album_files', 'files')){
-               foreach($this->request->files['album_files']['name'] as $key => $val) {
-                   if ($val) {
-                       move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'][$key]);
-                       echo 'YES';
-                   } else {
-                       echo 'NOT';
-                   }
-               }
+            $data = array();
+
+
+            if($this->request->has('album_name', 'post') && $this->request->has('album_main_file', 'files')){
+                $album_name = $this->request->post['album_name'];
+                $account_model = $this->load->model('account/account');
+
+//                devPrint($this->session->get('resource'));
+
+                $yandexRoot = $this->session->get('user')['resource']->getPath();
+                $yandexNewAlbumPath = $yandexRoot . '/' . $album_name;
+                $yandexNewAlbum = $this->yandexDisk->getResource($yandexNewAlbumPath);
+                $yandexNewAlbum->create($yandexNewAlbumPath);
+
+                if(!$account_model->hasAlbum($album_name, $this->session->get('user')['id'])){
+                    $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_main_file']['name'];
+                    if(move_uploaded_file($this->request->files['album_main_file']['tmp_name'], $new_file_path)){
+                        $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_main_file']['name']);
+                        if($yandexNewFile){
+                            $yandexNewFile->upload($new_file_path);
+                            unlink($new_file_path);
+                        }
+                    }
+                    if($this->request->has('album_files', 'files')){
+                        foreach($this->request->files['album_files']['name'] as $key => $val) {
+                            if ($val) {
+                                $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_main_file']['name'][$key];
+                                if(move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], $new_file_path)){
+                                    $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_main_file']['name'][$key]);
+                                    if($yandexNewFile){
+                                        $yandexNewFile->upload($new_file_path);
+                                        unlink($new_file_path);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else{
+                    $data['msg'] = '';
+                }
             }
         }
     }

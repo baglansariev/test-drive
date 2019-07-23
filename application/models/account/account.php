@@ -35,13 +35,21 @@
 
         public function getUserFullData($user_email)
         {
-            $query = "SELECT pk_users.email AS user_email, pk_users.name AS user_fullname, pk_users.status AS user_status, pk_users.password as user_password, pk_places.name AS place_name, pk_places.id AS place_id, pk_places.user_id FROM " . DB_PREFIX . "users LEFT JOIN " . DB_PREFIX . "places ON pk_users.id = pk_places.user_id WHERE email = '" . $user_email . "'";
+            $query = "SELECT pk_users.id AS user_id, pk_users.email AS user_email, pk_users.name AS user_fullname, pk_users.status AS user_status, pk_users.password as user_password, pk_places.name AS place_name, pk_places.id AS place_id, pk_places.user_id FROM " . DB_PREFIX . "users LEFT JOIN " . DB_PREFIX . "places ON pk_users.id = pk_places.user_id WHERE email = '" . $user_email . "'";
             return $this->db->getRow($query);
         }
 
         public function hasEmail($email)
         {
             $query = "SELECT COUNT(*) AS 'count' FROM " . DB_PREFIX . "users WHERE email = '" . $email . "'";
+            $result = $this->db->getRow($query);
+
+            return $result['count'];
+        }
+
+        public function hasAlbum($album, $user_id)
+        {
+            $query = "SELECT COUNT(*) AS 'count' FROM " . DB_PREFIX . "albums WHERE name = '" . $album . "' AND user_id = '" . $user_id . "'";
             $result = $this->db->getRow($query);
 
             return $result['count'];

@@ -16,12 +16,16 @@
         {
             $this->success_msg = [
                 'register' => 'Вы успешно зарегистрировались!',
+                'new_album' => 'Новый альбом успешно создан',
             ];
         }
 
         public function setErrorMsg()
         {
             $this->error_msg = [
+                'new_album' => [
+                    'has_album' => 'Такой альбом уже существует',
+                ],
                 'register' => 'Произошла ошибка. Попробуйте заново.',
                 'all_fields' => 'Заполните все поля',
                 'login_pass' => 'Неправильный логин или пароль!',
