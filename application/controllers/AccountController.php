@@ -202,8 +202,6 @@
                 $album_name = $this->request->post['album_name'];
                 $account_model = $this->load->model('account/account');
 
-//                devPrint($this->session->get('resource'));
-
                 $yandexRoot = $this->session->get('user')['resource']->getPath();
                 $yandexNewAlbumPath = $yandexRoot . '/' . $album_name;
                 $yandexNewAlbum = $this->yandexDisk->getResource($yandexNewAlbumPath);
@@ -221,9 +219,9 @@
                     if($this->request->has('album_files', 'files')){
                         foreach($this->request->files['album_files']['name'] as $key => $val) {
                             if ($val) {
-                                $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_main_file']['name'][$key];
+                                $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'][$key];
                                 if(move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], $new_file_path)){
-                                    $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_main_file']['name'][$key]);
+                                    $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_files']['name'][$key]);
                                     if($yandexNewFile){
                                         $yandexNewFile->upload($new_file_path);
                                         unlink($new_file_path);
