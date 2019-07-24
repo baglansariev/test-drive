@@ -39,6 +39,36 @@
             return $this->db->getRow($query);
         }
 
+        public function getAlbum($album_name)
+        {
+            $query = "SELECT * FROM " . DB_PREFIX . "albums WHERE name = '" . $album_name . "'";
+            return $this->db->getRow($query);
+        }
+
+        public function getAlbums($user_id)
+        {
+            $query = "SELECT * FROM " . DB_PREFIX . "albums WHERE user_id = '" . $user_id . "'";
+            return $this->db->getAllRows($query);
+        }
+
+        public function getImagesOfAlbum($album_id)
+        {
+            $query = "SELECT * FROM " . DB_PREFIX . "album_images WHERE album_id = '" . $album_id . "'";
+            return $this->db->getAllRows($query);
+        }
+
+        public function setNewAlbum($album_name, $main_img_url, $user_id)
+        {
+            $query = "INSERT INTO " . DB_PREFIX . "albums SET name = '" . $album_name . "', main_img = '" . $main_img_url . "', user_id = '" . (int)$user_id . "'";
+            $this->db->changeData($query);
+        }
+
+        public function setNewImage($img_url, $album_id)
+        {
+            $query = "INSERT INTO " . DB_PREFIX . "album_images SET img_url = '" . $img_url . "', album_id = '" . $album_id . "'";
+            $this->db->changeData($query);
+        }
+
         public function hasEmail($email)
         {
             $query = "SELECT COUNT(*) AS 'count' FROM " . DB_PREFIX . "users WHERE email = '" . $email . "'";

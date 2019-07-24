@@ -20,19 +20,23 @@
             'controller' => 'account',
             'action' => 'logout',
         ],
-        'agreement' => [
+        'account/agreement' => [
             'controller' => 'account',
             'action' => 'agreement',
         ],
-        'new-album' => [
+        'account/new-album' => [
             'controller' => 'account',
             'action' => 'newAlbum',
         ],
-        'upload' => [
+        'account/upload' => [
             'controller' => 'account',
             'action' => 'fileUpload',
         ],
-        'gallery' => [
+        'account/gallery' => [
+            'controller' => 'account',
+            'action' => 'gallery',
+        ],
+        'account/gallery/album/[0-9]+' => [
             'controller' => 'account',
             'action' => 'gallery',
         ],

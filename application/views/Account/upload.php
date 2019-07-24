@@ -106,24 +106,20 @@
 
             $.ajax({
                 type: "POST",
-                url: "/upload",
+                url: "/account/upload",
                 data: ajaxData,
                 cache: false,
                 contentType: false,
                 processData: false,
                 beforeSend: function() {
-                    $('.upload-msg').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов');
-                    $('.fa-spinner').animate({
-                        // transform: 'rotateY(360deg)',
-                        fontSize: '26px',
-                    }, 600).animate({
-                        // transform: 'rotateY(360deg)',
-                        fontSize: '16px',
-                    }, 600);
+                    $('.file-upload-label span').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов, подождите...');
                 },
                 success: function (ans) {
                     console.log(ans);
-                    $('.upload-msg').text('Загрузка файлов успешно завершена!');
+                    $('.upload-msg').text(ans);
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
                 },
                 error: function (ans) {
                     console.log(ans);
@@ -138,24 +134,20 @@
 
             $.ajax({
                 type: "POST",
-                url: "/upload",
+                url: "/account/upload",
                 data: ajaxData,
                 cache: false,
                 contentType: false,
                 processData: false,
                 beforeSend: function() {
-                    $('.upload-msg').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов');
-                    $('.fa-spinner').animate({
-                        // transform: 'rotateY(360deg)',
-                        fontSize: '26px',
-                    }, 600).animate({
-                        // transform: 'rotateY(360deg)',
-                        fontSize: '16px',
-                    }, 600);
+                    $('.file-upload-label span').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов, подождите...');
                 },
                 success: function (ans) {
                     console.log(ans);
-                    $('.upload-msg').text('Загрузка файлов успешно завершена!');
+                    $('.upload-msg').text(ans);
+                    setTimeout(function(){
+                        location.reload();
+                    }, 2000);
                 },
                 error: function (ans) {
                     console.log(ans);

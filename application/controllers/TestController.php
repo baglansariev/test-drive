@@ -7,9 +7,8 @@
 	{
 		public function indexAction()
 		{
-			$baseResource = $this->yandexDisk->getResource('Premier Kazakhstan');
-            $baseResource->getPath();
-
+		    $resource = $this->yandexDisk->getResource($this->session->get('user')['place_name']);
+			devPrint($resource->items[0]->path);
 
 		}
 	}

@@ -4,6 +4,7 @@
 
     class AccountController extends Controller
     {
+        // Страница Личный Кабинет
         public function indexAction()
         {
             if(!$this->session->has('user')) {
@@ -18,16 +19,11 @@
             $data['header'] = $this->load->controller('common/header');
             $data['footer'] = $this->load->controller('common/footer');
 
-            if($this->request->has('account_tab', 'post')){
-                $this->response->addHeader('Content-Type: application/json; charset=UTF-8');
-                $this->response->output(json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG));
-            }
-            else{
-                $this->view->response('Account/account', $data);
-            }
+            $this->view->response('Account/account', $data);
 
         }
 
+        // Страница Входа
         public function loginAction()
         {
             if($this->session->has('user')){
@@ -80,6 +76,7 @@
             $this->view->response('Account/login', $data);
         }
 
+        // Страница регистрации
         public function registerAction()
         {
             if($this->session->has('user')){
@@ -143,6 +140,7 @@
             $this->view->response('Account/register', $data);
         }
 
+        // Страница Выхода
         public function logoutAction()
         {
             if($this->session->has('user')){
@@ -156,31 +154,40 @@
             $this->view->asset->setTitle('Условия соглашения');
 
             $data['account_content'] = $this->load->controller('account/agreement');
+            $data['column_left'] = $this->load->controller('Account/columnLeft');
+            $data['header'] = $this->load->controller('common/header');
+            $data['footer'] = $this->load->controller('common/footer');
 
-            if($this->request->has('account_tab', 'post')){
-                $this->response->addHeader('Content-Type: application/json; charset=UTF-8');
-                $this->response->output(json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG));
-            }
-            else{
-                $this->view->response('Account/account', $data);
-            }
+            $this->view->response('Account/account', $data);
         }
 
+        // Моя галерея
         public function galleryAction()
         {
             $this->view->asset->setTitle('Моя галлерея');
 
             $data['account_content'] = $this->load->controller('account/myGallery');
+            $data['column_left'] = $this->load->controller('Account/columnLeft');
+            $data['header'] = $this->load->controller('common/header');
+            $data['footer'] = $this->load->controller('common/footer');
 
-            if($this->request->has('account_tab', 'post')){
-                $this->response->addHeader('Content-Type: application/json; charset=UTF-8');
-                $this->response->output(json_encode($data['account_content'], JSON_HEX_QUOT | JSON_HEX_TAG));
-            }
-            else{
-                $this->view->response('Account/account', $data);
-            }
+            $this->view->response('Account/account', $data);
         }
 
+        // Альбом
+        public function albumAction()
+        {
+            $this->view->asset->setTitle('Новый альбом');
+
+            $data['account_content'] = $this->load->controller('account/upload');
+            $data['column_left'] = $this->load->controller('account/columnLeft');
+            $data['header'] = $this->load->controller('common/header');
+            $data['footer'] = $this->load->controller('common/footer');
+
+            $this->view->response('Account/account', $data);
+        }
+
+        // Новый Альбом
         public function newAlbumAction()
         {
             $this->view->asset->setTitle('Новый альбом');
@@ -193,29 +200,48 @@
             $this->view->response('Account/account', $data);
         }
 
+        // Загрузка файлов
         public function fileUploadAction()
         {
             $data = array();
-
 
             if($this->request->has('album_name', 'post') && $this->request->has('album_main_file', 'files')){
                 $album_name = $this->request->post['album_name'];
                 $account_model = $this->load->model('account/account');
 
-                $yandexRoot = $this->session->get('user')['resource']->getPath();
-                $yandexNewAlbumPath = $yandexRoot . '/' . $album_name;
-                $yandexNewAlbum = $this->yandexDisk->getResource($yandexNewAlbumPath);
-                $yandexNewAlbum->create($yandexNewAlbumPath);
-
+                // ** Загрузка главного фото альбома ** Если такого альбома нет в БД
                 if(!$account_model->hasAlbum($album_name, $this->session->get('user')['id'])){
+
+                    // Получаем путь корневой папки Компании в Яндекс Диск
+                    $yandexRoot = $this->session->get('user')['resource']->getPath();
+                    // Путь нового альбома в Яндекс Диск
+                    $yandexNewAlbumPath = $yandexRoot . '/' . $album_name;
+                    // Получаем ресурс Яндекс Диска с данным Путем
+                    $yandexNewAlbum = $this->yandexDisk->getResource($yandexNewAlbumPath);
+                    // Создаем новую папку в Яндекс Диске с данным Путем
+                    $yandexNewAlbum->create($yandexNewAlbumPath);
+                    // Получаем путь создаваемого файла в новой папке
+                    $yandexNewFilePath = $yandexNewAlbum->getPath() . '/' . $this->request->files['album_main_file']['name'];
+
+                    // Записываем в БД данные нового альбома
+                    $account_model->setNewAlbum($album_name, $yandexNewFilePath, $this->session->get('user')['id']);
+                    // Получаем данные альбома с БД
+                    $album = $account_model->getAlbum($album_name);
+                    // Получаем локальный путь нового файла
                     $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_main_file']['name'];
                     if(move_uploaded_file($this->request->files['album_main_file']['tmp_name'], $new_file_path)){
-                        $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_main_file']['name']);
-                        if($yandexNewFile){
+                        // Получаем ресурс Яндекс Диска с Путем нового файла
+                        $yandexNewFile = $this->yandexDisk->getResource($yandexNewFilePath);
+                        if(!$yandexNewFile->has()){
+                            // Если такого файла нет загружаем его в Яндекс Диск
                             $yandexNewFile->upload($new_file_path);
+                            // Записываем данные изображения в БД
+                            $account_model->setNewImage($yandexNewFile->getPath(), $album['id']);
+                            // Удаляем файл в локальной директории
                             unlink($new_file_path);
                         }
                     }
+                    // ** Загрузка дополнительных фото **
                     if($this->request->has('album_files', 'files')){
                         foreach($this->request->files['album_files']['name'] as $key => $val) {
                             if ($val) {
@@ -224,15 +250,17 @@
                                     $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_files']['name'][$key]);
                                     if($yandexNewFile){
                                         $yandexNewFile->upload($new_file_path);
+                                        $account_model->setNewImage($yandexNewFile->getPath(), $album['id']);
                                         unlink($new_file_path);
                                     }
                                 }
                             }
                         }
+                        $this->response->output($this->form->success_msg['new_album']);
                     }
                 }
                 else{
-                    $data['msg'] = '';
+                    $this->response->output($this->form->error_msg['new_album']['has_album']);
                 }
             }
         }

@@ -3,7 +3,7 @@
 	error_reporting(E_ALL);
 
 	function devPrint($var){
-		if(is_array($var)){
+		if(is_array($var) || is_object($var)){
 			echo '<pre>';
 			print_r($var);
 			echo '</pre>';
@@ -14,7 +14,7 @@
 	}
 
 	function dump($var){
-		if(is_array($var)){
+		if(is_array($var) || is_object($var)){
 			echo '<pre>';
 			var_dump($var);
 			echo '</pre>';
