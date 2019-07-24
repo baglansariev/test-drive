@@ -111,8 +111,19 @@
                 cache: false,
                 contentType: false,
                 processData: false,
+                beforeSend: function() {
+                    $('.upload-msg').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов');
+                    $('.fa-spinner').animate({
+                        // transform: 'rotateY(360deg)',
+                        fontSize: '26px',
+                    }, 600).animate({
+                        // transform: 'rotateY(360deg)',
+                        fontSize: '16px',
+                    }, 600);
+                },
                 success: function (ans) {
                     console.log(ans);
+                    $('.upload-msg').text('Загрузка файлов успешно завершена!');
                 },
                 error: function (ans) {
                     console.log(ans);
@@ -132,8 +143,19 @@
                 cache: false,
                 contentType: false,
                 processData: false,
+                beforeSend: function() {
+                    $('.upload-msg').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов');
+                    $('.fa-spinner').animate({
+                        // transform: 'rotateY(360deg)',
+                        fontSize: '26px',
+                    }, 600).animate({
+                        // transform: 'rotateY(360deg)',
+                        fontSize: '16px',
+                    }, 600);
+                },
                 success: function (ans) {
                     console.log(ans);
+                    $('.upload-msg').text('Загрузка файлов успешно завершена!');
                 },
                 error: function (ans) {
                     console.log(ans);
