@@ -685,3 +685,48 @@ input::-moz-placeholder{
 	font-size: 15px;
 	font-weight: bold;
 }
+.account-album-images{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+}
+.account-album-image{
+	display: block;
+	width: 23%;
+	height: 200px;
+	border: 2px solid #c90909;
+	overflow: hidden;
+	position: relative;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+}
+.account-album-image img{
+	width: 100%;
+	height: auto;
+}
+.account-album-image .img-cover{
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0,0.7);
+	top: 100%;
+	left: 0;
+	z-index: 3;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	color: #fff;
+	font-weight: lighter;
+}
+.img-action{
+	text-transform: uppercase;
+	font-size: 14px;
+	transition:	all ease 0.4s;
+	margin-bottom: 10px;
+}
+.img-action:hover{
+	color: #c90909;
+	font-size: 16px;
+}

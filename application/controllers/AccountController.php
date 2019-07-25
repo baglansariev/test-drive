@@ -1,6 +1,7 @@
 <?php
     namespace controllers;
     use core\engine\Controller;
+    use core\lib\ImageEditor;
 
     class AccountController extends Controller
     {
@@ -203,6 +204,7 @@
         // Загрузка файлов
         public function fileUploadAction()
         {
+            $imageEditor = new ImageEditor;
             $data = array();
 
             if($this->request->has('album_name', 'post') && $this->request->has('album_main_file', 'files')){
