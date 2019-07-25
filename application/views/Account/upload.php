@@ -1,15 +1,29 @@
 <h3 class="account-page-title">Новый альбом</h3>
 <div class="account-page-content">
     <form class="file-form" action="" method="post" enctype="multipart/form-data">
-        <p class="account-form-block">
+        <div class="account-form-block">
             Название альбома:
             <input name="album_name" type="text" value="" required>
-        </p>
-        <p class="account-form-block">
+        </div>
+        <div class="account-form-block">
             Главное фото:
             <input id="main_file_upload" name="album_main_file" type="file" value="" required>
-        </p>
-        <p class="account-file-block">
+        </div>
+        <div class="account-filter-block">
+            Выберите фильтр для ваших фото:
+            <div class="account-filters">
+                <div class="account-filter">
+                    <img src="/public/images/filter-examples/filter-gray.jpg" alt="">
+                </div>
+                <div class="account-filter">
+                    <img src="/public/images/filter-examples/filter-green.jpg" alt="">
+                </div>
+                <div class="account-filter">
+                    <img src="/public/images/filter-examples/filter-purple.jpg" alt="">
+                </div>
+            </div>
+        </div>
+        <div class="account-file-block">
             Дополнительные фото:
             <input id="file-upload" name="album_files[]" type="file" multiple>
             <label class="file-upload-label" for="file-upload">
@@ -18,11 +32,43 @@
                     <span class="upload-msg">Загрузите или перетащите фото</span>
                 </span>
             </label>
-        </p>
+        </div>
         <input id="album_btn" type="submit" value="сохранить данные">
     </form>
 </div>
 <style>
+    .file-form div{
+        margin-bottom: 20px;
+    }
+    .account-filter-block{
+        display: flex;
+        flex-direction: column;
+    }
+    .account-filters{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+    .account-filter{
+        width: 32%;
+        height: 150px;
+        overflow: hidden;
+        border: 3px solid #cdcdcd;
+        -webkit-border-radius: 5px;
+        -moz-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all ease 0.4s;
+    }
+    .account-filter:hover{
+        border-color: #c90909;
+    }
+    .account-filter img{
+        width: 100%;
+        height: auto;
+    }
     .account-file-block{
         display: flex;
         flex-direction: column;
@@ -102,29 +148,8 @@
             $(droppedFiles).each(function () {
                 ajaxData.append($('#main_file-upload').attr('name'), this);
             });
-            // console.log('test');
 
-            $.ajax({
-                type: "POST",
-                url: "/account/upload",
-                data: ajaxData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    $('.file-upload-label span').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов, подождите...');
-                },
-                success: function (ans) {
-                    console.log(ans);
-                    $('.upload-msg').text(ans);
-                    setTimeout(function(){
-                        location.reload();
-                    }, 2000);
-                },
-                error: function (ans) {
-                    console.log(ans);
-                }
-            });
+            formAjax(ajaxData)
         });
     }
     else{
@@ -132,27 +157,39 @@
             e.preventDefault();
             var ajaxData = new FormData($('.file-form')[0]);
 
-            $.ajax({
-                type: "POST",
-                url: "/account/upload",
-                data: ajaxData,
-                cache: false,
-                contentType: false,
-                processData: false,
-                beforeSend: function() {
-                    $('.file-upload-label span').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов, подождите...');
-                },
-                success: function (ans) {
-                    console.log(ans);
-                    $('.upload-msg').text(ans);
-                    setTimeout(function(){
+            formAjax(ajaxData)
+        });
+    }
+
+    function formAjax(ajaxData){
+        $.ajax({
+            type: "POST",
+            url: "/account/upload",
+            data: ajaxData,
+            cache: false,
+            contentType: false,
+            processData: false,
+            beforeSend: function() {
+                $('.file-upload-label span').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов, подождите...');
+            },
+            success: function (ans) {
+                if(ans.error_msg){
+                    if(!alert(ans.error_msg)){
                         location.reload();
-                    }, 2000);
-                },
-                error: function (ans) {
-                    console.log(ans);
+                    }
                 }
-            });
+                if(ans.success_msg){
+                    if(!alert(ans.success_msg)){
+                        location.reload();
+                    }
+                }
+
+            },
+            error: function (ans) {
+                if(!alert('Ошибка! Попробуйте позже...')){
+                    location.reload();
+                }
+            }
         });
     }
 

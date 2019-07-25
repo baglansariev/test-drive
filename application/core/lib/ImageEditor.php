@@ -3,7 +3,17 @@
 
     class ImageEditor
     {
-        public function imagesStamp($img_url, $stamp_url, $img_type)
+        public function getImageType($image)
+        {
+            $arr = explode('.', $image);
+            $type = array_pop($arr);
+
+            if($type == 'jpg' || $type == 'jpeg' || $type == 'png'){
+                return $type;
+            }
+        }
+
+        public function imageStamp($img_url, $stamp_url, $img_type)
         {
             // Загрузка штампа и фото, для которого применяется водяной знак (называется штамп или печать)
             $stamp = imagecreatefrompng($stamp_url);

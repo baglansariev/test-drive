@@ -208,6 +208,14 @@
             $data = array();
 
             if($this->request->has('album_name', 'post') && $this->request->has('album_main_file', 'files')){
+                $type = $imageEditor->getImageType($this->request->files['album_main_file']['name']);
+
+                if(!$type){
+                    $json['error_msg'] = $this->form->error_msg['new_album']['wrong_type'];
+                    $this->response->outputJSON($json);
+                    die();
+                }
+
                 $album_name = $this->request->post['album_name'];
                 $account_model = $this->load->model('account/account');
 
@@ -247,6 +255,14 @@
                     if($this->request->has('album_files', 'files')){
                         foreach($this->request->files['album_files']['name'] as $key => $val) {
                             if ($val) {
+                                $type = $imageEditor->getImageType($this->request->files['album_main_file']['name'][$key]);
+
+                                if(!$type){
+                                    $json['error_msg'] = $this->form->error_msg['new_album']['wrong_type'];
+                                    $this->response->outputJSON($json);
+                                    die();
+                                }
+
                                 $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'][$key];
                                 if(move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], $new_file_path)){
                                     $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_files']['name'][$key]);
@@ -258,11 +274,13 @@
                                 }
                             }
                         }
-                        $this->response->output($this->form->success_msg['new_album']);
+                        $json['success_msg'] = $this->form->success_msg['new_album'];
+                        $this->response->outputJSON($json);
                     }
                 }
                 else{
-                    $this->response->output($this->form->error_msg['new_album']['has_album']);
+                    $json['error_msg'] = $this->form->error_msg['new_album']['has_album'];
+                    $this->response->outputJSON($json);
                 }
             }
         }
