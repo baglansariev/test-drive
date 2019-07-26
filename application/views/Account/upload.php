@@ -12,13 +12,13 @@
         <div class="account-filter-block">
             Выберите фильтр для ваших фото:
             <div class="account-filters">
-                <div class="account-filter">
+                <div class="account-filter" data-filter="gray">
                     <img src="/public/images/filter-examples/filter-gray.jpg" alt="">
                 </div>
-                <div class="account-filter">
+                <div class="account-filter" data-filter="green">
                     <img src="/public/images/filter-examples/filter-green.jpg" alt="">
                 </div>
-                <div class="account-filter">
+                <div class="account-filter" data-filter="purple">
                     <img src="/public/images/filter-examples/filter-purple.jpg" alt="">
                 </div>
             </div>
@@ -105,6 +105,19 @@
     }
 </style>
 <script>
+    // $('[name=account_filter]').css('display', 'inline');
+    $('.account-filter').click(function(){
+        var filter = $(this).data('filter');
+        $('[name=account_filter]').remove();
+        $('.account-filter').css('border-color', '#cdcdcd');
+        $(this).css('border-color', '#c90909');
+        $(this).append('<input type="text" name="account_filter" value="' + filter + '" hidden>');
+    });
+
+
+
+
+
     var isAdvancedUpload = function() {
         var div = document.createElement('div');
         return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
@@ -161,6 +174,7 @@
         });
     }
 
+
     function formAjax(ajaxData){
         $.ajax({
             type: "POST",
@@ -183,6 +197,7 @@
                         location.reload();
                     }
                 }
+                console.log(ans);
 
             },
             error: function (ans) {

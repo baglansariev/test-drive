@@ -204,10 +204,17 @@
         // Загрузка файлов
         public function fileUploadAction()
         {
+
             $imageEditor = new ImageEditor;
             $data = array();
+            $filter = false;
 
             if($this->request->has('album_name', 'post') && $this->request->has('album_main_file', 'files')){
+
+                if($this->request->has('account_filter', 'post')){
+                    $filter = $this->request->post['account_filter'];
+                }
+
                 $type = $imageEditor->getImageType($this->request->files['album_main_file']['name']);
 
                 if(!$type){
@@ -240,6 +247,10 @@
                     // Получаем локальный путь нового файла
                     $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_main_file']['name'];
                     if(move_uploaded_file($this->request->files['album_main_file']['tmp_name'], $new_file_path)){
+                        // Ставим водяной знак компании
+                        $imageEditor->imageStamp($new_file_path, $type);
+                        // Применяем фильтр для фото
+                        $imageEditor->imgSetFilter($new_file_path, $type, $filter);
                         // Получаем ресурс Яндекс Диска с Путем нового файла
                         $yandexNewFile = $this->yandexDisk->getResource($yandexNewFilePath);
                         if(!$yandexNewFile->has()){
@@ -253,24 +264,53 @@
                     }
                     // ** Загрузка дополнительных фото **
                     if($this->request->has('album_files', 'files')){
-                        foreach($this->request->files['album_files']['name'] as $key => $val) {
-                            if ($val) {
-                                $type = $imageEditor->getImageType($this->request->files['album_main_file']['name'][$key]);
+                        if(is_array($this->request->files['album_files']['name'])){
+                            foreach($this->request->files['album_files']['name'] as $key => $val) {
+                                if ($val) {
+                                    $type = $imageEditor->getImageType($this->request->files['album_files']['name'][$key]);
 
-                                if(!$type){
-                                    $json['error_msg'] = $this->form->error_msg['new_album']['wrong_type'];
-                                    $this->response->outputJSON($json);
-                                    die();
-                                }
-
-                                $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'][$key];
-                                if(move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], $new_file_path)){
-                                    $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_files']['name'][$key]);
-                                    if($yandexNewFile){
-                                        $yandexNewFile->upload($new_file_path);
-                                        $account_model->setNewImage($yandexNewFile->getPath(), $album['id']);
-                                        unlink($new_file_path);
+                                    if(!$type){
+                                        $json['error_msg'] = $this->form->error_msg['new_album']['wrong_type_additional'];
+                                        $this->response->outputJSON($json);
+                                        die();
                                     }
+
+                                    $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'][$key];
+                                    if(move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], $new_file_path)){
+                                        // Ставим водяной знак компании
+                                        $imageEditor->imageStamp($new_file_path, $type);
+                                        // Применяем фильтр для фото
+                                        $imageEditor->imgSetFilter($new_file_path, $type, $filter);
+                                        $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_files']['name'][$key]);
+                                        if($yandexNewFile){
+                                            $yandexNewFile->upload($new_file_path);
+                                            $account_model->setNewImage($yandexNewFile->getPath(), $album['id']);
+                                            unlink($new_file_path);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                        else{
+                            $type = $imageEditor->getImageType($this->request->files['album_files']['name']);
+
+                            if(!$type){
+                                $json['error_msg'] = $this->form->error_msg['new_album']['wrong_type_additional'];
+                                $this->response->outputJSON($json);
+                                die();
+                            }
+
+                            $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'];
+                            if(move_uploaded_file($this->request->files['album_files']['tmp_name'], $new_file_path)){
+                                // Ставим водяной знак компании
+                                $imageEditor->imageStamp($new_file_path, $type);
+                                // Применяем фильтр для фото
+                                $imageEditor->imgSetFilter($new_file_path, $type, $filter);
+                                $yandexNewFile = $this->yandexDisk->getResource( $yandexNewAlbum->getPath() . '/' . $this->request->files['album_files']['name']);
+                                if($yandexNewFile){
+                                    $yandexNewFile->upload($new_file_path);
+                                    $account_model->setNewImage($yandexNewFile->getPath(), $album['id']);
+                                    unlink($new_file_path);
                                 }
                             }
                         }
