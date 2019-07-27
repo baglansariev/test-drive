@@ -32,7 +32,7 @@
             'controller' => 'account',
             'action' => 'fileUpload',
         ],
-        'account/gallery' => [
+        'account/gallery(\?del_album=[0-9]+)?' => [
             'controller' => 'account',
             'action' => 'gallery',
         ],

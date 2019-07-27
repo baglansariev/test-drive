@@ -7,6 +7,7 @@
         public function index()
         {
             $account_model = $this->load->model('account/account');
+            $this->deleteAlbum();
             $albums = $account_model->getAlbums($this->session->get('user')['id']);
             $data = array();
 
@@ -17,15 +18,13 @@
                 return $this->load->view('Account/album', $this->album($album_id));
             }
 
+            $data['albums'] = array();
             if($albums){
-                $data['albums'] = array();
                 foreach($albums as $key => $album){
                     $data['albums'][$key]['id'] = $album['id'];
                     $data['albums'][$key]['name'] = $album['name'];
                     $data['albums'][$key]['main_img'] = $album['main_img'];
                 }
-//                devPrint('<img src="'. $this->yandexDisk->getResource($data['albums'][0]['main_img'])->preview .'">');
-//                exit;
             }
             return $this->load->view('Account/my_gallery', $data);
         }
@@ -46,4 +45,17 @@
 
             return $data;
         }
+
+        public function deleteAlbum()
+        {
+            if($this->request->has('album_del', 'post')){
+                $account_model = $this->load->model('account/account');
+                $album = $account_model->getAlbumById($this->request->post['album_del']);
+                $resource = $this->yandexDisk->getResource($album['dir_path']);
+                $account_model->deleteAlbumById($album['id']);
+                $account_model->deleteImagesByAlbum($album['id']);
+                $resource->delete(true);
+            }
+        }
+
     }

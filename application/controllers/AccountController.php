@@ -168,6 +168,7 @@
             $this->view->asset->setTitle('Моя галлерея');
 
             $data['account_content'] = $this->load->controller('account/myGallery');
+
             $data['column_left'] = $this->load->controller('Account/columnLeft');
             $data['header'] = $this->load->controller('common/header');
             $data['footer'] = $this->load->controller('common/footer');
@@ -241,7 +242,7 @@
                     $yandexNewFilePath = $yandexNewAlbum->getPath() . '/' . $this->request->files['album_main_file']['name'];
 
                     // Записываем в БД данные нового альбома
-                    $account_model->setNewAlbum($album_name, $yandexNewFilePath, $this->session->get('user')['id']);
+                    $account_model->setNewAlbum($album_name, $yandexNewAlbumPath, $yandexNewFilePath, $this->session->get('user')['id']);
                     // Получаем данные альбома с БД
                     $album = $account_model->getAlbum($album_name);
                     // Получаем локальный путь нового файла
