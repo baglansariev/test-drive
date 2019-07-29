@@ -12,7 +12,7 @@
             $arr = explode('.', $image);
             $type = array_pop($arr);
 
-            if($type == 'jpg' || $type == 'jpeg' || $type == 'png'){
+            if($type == 'jpg' || $type == 'jpeg' || $type == 'png' || $type == 'gif'){
                 return $type;
             }
         }
