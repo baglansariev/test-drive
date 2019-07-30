@@ -14,6 +14,7 @@
             $uri_params = explode('/', $this->request->getUriWithoutParams());
             if(isset($uri_params[2]) && $uri_params[2] == 'album'){
                 $album_id = (int)$uri_params[3];
+                $this->deleteImage();
 
                 return $this->load->view('Account/album', $this->album($album_id));
             }
@@ -38,8 +39,8 @@
             $data['images'] = array();
             if($images){
                 foreach($images as $key => $image){
-                    $data['images_preview'][$key] = $this->yandexDisk->getResource($image['img_url'])->preview;
-                    $data['images'][$key] = $this->yandexDisk->getResource($image['img_url'])->getLink();
+                    $data['images'][$key]['url'] = $this->yandexDisk->getResource($image['img_url'])->getLink();
+                    $data['images'][$key]['id'] = $image['id'];
                 }
             }
 
@@ -55,6 +56,20 @@
                 $account_model->deleteAlbumById($album['id']);
                 $account_model->deleteImagesByAlbum($album['id']);
                 $resource->delete(true);
+            }
+        }
+
+        public function deleteImage()
+        {
+            if($this->request->has('del_id')){
+                $account_model = $this->load->model('account/account');
+                $image = $account_model->getImageById($this->request->post['del_id']);
+                $resource = $this->yandexDisk->getResource($image['img_url']);
+                $resource->delete(true);
+                $account_model->deleteImageById($this->request->post['del_id']);
+
+                $json['del_image'] = $this->form->success_msg['del_image'];
+                $this->response->outputJSON($json['del_image']);
             }
         }
 

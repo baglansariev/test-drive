@@ -48,6 +48,10 @@
             'controller' => 'place',
             'action' => 'index',
         ],
+        'photo-flow' => [
+            'controller' => 'photoflow',
+            'action' => 'index',
+        ],
         'test' => [
             'controller' => 'test',
             'action' => 'index',

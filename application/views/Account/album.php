@@ -2,11 +2,11 @@
 <div class="account-page-content">
     <div class="account-album-images">
         <?php foreach($images as $image): ?>
-            <div class="account-album-image" style="background-image: url('<?php echo $image ?>')">
-                <span class="img-cover">
-                    <a class="img-action view" href="<?php echo $image ?>">ПРОСМОТР</a>
-                    <a class="img-action main" href="">Сделать главным</a>
-                    <a class="img-action delete" href="">Удалить</a>
+            <div class="account-album-image" style="background-image: url('<?php echo $image['url'] ?>')">
+                <span class="img-cover" data-id="<?php echo $image['id'] ?>">
+                    <a class="img-action view" href="<?php echo $image['url'] ?>">ПРОСМОТР</a>
+                    <a class="img-action main" href="#">Сделать главным</a>
+                    <a class="img-action delete" href="#">Удалить</a>
                 </span>
             </div>
         <?php endforeach ?>
@@ -29,9 +29,29 @@
     $('.img-action.view').click(function(e){
         e.preventDefault();
         var img_href = $(this).attr('href');
-        $('body').append('<div class="img-view-cover"><div class="view-img"><img src="' + img_href + '"></div></div>');
-        console.log($(this).attr('href'));
+        $('body').append('<div class="img-view-cover"><div class="view-img"><img src="' + img_href + '"><span class="img-close"><i class="fas fa-times"></i></span></div></div>');
 
+        // console.log($('.img-view-cover i')[0]);
+        $('.img-close').click(function () {
+            $('.img-view-cover').remove();
+        });
+
+    });
+
+    $('.img-action.delete').click(function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: "",
+            dataType: "JSON",
+            data: "del_id="+$('.img-cover').data('id'),
+            success: function (ans) {
+                console.log(ans);
+                if(!alert('Изображение успешно удалено!')){
+                    location.reload();
+                };
+            }
+        });
     });
 </script>
 

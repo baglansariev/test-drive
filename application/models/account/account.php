@@ -69,6 +69,12 @@
             return $this->db->getAllRows($query);
         }
 
+        public function getImageById($image_id)
+        {
+            $query = "SELECT * FROM " . DB_PREFIX . "album_images WHERE id = '" . $image_id . "'";
+            return $this->db->getRow($query);
+        }
+
         public function setNewAlbum($album_name, $album_yandex_path, $main_img_url, $user_id)
         {
             $query = "INSERT INTO " . DB_PREFIX . "albums SET name = '" . $album_name . "', dir_path = '" . $album_yandex_path . "', main_img = '" . $main_img_url . "', user_id = '" . (int)$user_id . "'";
@@ -84,6 +90,12 @@
         public function deleteImagesByAlbum($album_id)
         {
             $query = "DELETE FROM " . DB_PREFIX . "album_images WHERE album_id = '" . $album_id . "'";
+            $this->db->changeData($query);
+        }
+
+        public function deleteImageById($image_id)
+        {
+            $query = "DELETE FROM " . DB_PREFIX . "album_images WHERE id = '" . $image_id . "'";
             $this->db->changeData($query);
         }
 

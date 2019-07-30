@@ -31,7 +31,7 @@
 					<a id="search" href="#">
 						<i class="fas fa-search"></i>
 					</a>
-					<a href="/test.php">
+					<a href="/photo-flow">
 						<i class="fas fa-th"></i>
 					</a>
 				</div>

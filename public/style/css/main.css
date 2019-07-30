@@ -719,11 +719,13 @@ input::-moz-placeholder{
 	display: flex;
 	justify-content: space-around;
 	align-items: center;
+	flex-wrap: wrap;
 }
 .account-album-image{
 	display: block;
 	width: 23%;
 	height: 200px;
+	margin-bottom: 20px;
 	border: 2px solid #c90909;
 	overflow: hidden;
 	position: relative;
@@ -784,7 +786,16 @@ input::-moz-placeholder{
 	-webkit-border-radius: 10px;
 	-moz-border-radius: 10px;
 	border-radius: 10px;
-
+	position: relative;
+}
+.img-close{
+	display: block;
+	color: #fff;
+	font-size: 30px;
+	position: absolute;
+	top: -3%;
+	right: -10%;
+	cursor: pointer;
 }
 .view-img img{
 	width: 100%;
