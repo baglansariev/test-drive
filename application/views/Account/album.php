@@ -29,7 +29,7 @@
     $('.img-action.view').click(function(e){
         e.preventDefault();
         var img_href = $(this).attr('href');
-        $('body').append('<div class="img-view-cover"><div class="view-img"><img src="' + img_href + '"><span class="img-close"><i class="fas fa-times"></i></span></div></div>');
+        $('body').append('<div class="img-view-cover"><div class="view-img"><img src="' + img_href + '"><span class="img-download"><i class="fas fa-download"></i></span><span class="img-close"><i class="fas fa-times"></i></span></div></div>');
 
         // console.log($('.img-view-cover i')[0]);
         $('.img-close').click(function () {

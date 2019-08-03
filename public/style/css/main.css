@@ -788,7 +788,7 @@ input::-moz-placeholder{
 	border-radius: 10px;
 	position: relative;
 }
-.img-close{
+.img-close, .img-download{
 	display: block;
 	color: #fff;
 	font-size: 30px;
@@ -796,6 +796,11 @@ input::-moz-placeholder{
 	top: -3%;
 	right: -10%;
 	cursor: pointer;
+}
+.img-download{
+	font-size: 28px;
+	top: -3%;
+	right: -5%;
 }
 .view-img img{
 	width: 100%;

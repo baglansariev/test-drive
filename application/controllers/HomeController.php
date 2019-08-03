@@ -14,14 +14,32 @@
 
 	    	$this->view->asset->setJs('/public/style/owl-carousel/owl-carousel-switcher.js');
 
-            // $client  =  new  Google_Client();
-            // $client -> setApplicationName ("test-drive");
-            // $client -> setDeveloperKey ("731952689658-eu3fmraurvugpc2e0df13f6393gm2grb.apps.googleusercontent.com ");
-            // $client->SetClientSecret("ow32ubZA_Dv8jhFtyzqQJV52");
-            // $client->SetRedirectUri($_SERVER['REQUEST_URI']);
+            $home_model = $this->load->model('home/home');
+            $albums = $home_model->getAlbums();
+            $data['albums'] = array();
+
+            if($albums){
+                $divider = 0;
+                foreach ($albums as $key => $album) {
+                    if($key%14 == 0){
+                        $divider++;
+                    }
+                    $data['albums'][$divider][$key]['id'] = $album['id'];
+                    $data['albums'][$divider][$key]['name'] = $album['name'];
+                    $data['albums'][$divider][$key]['dir_path'] = $album['dir_path'];
+                    $data['albums'][$divider][$key]['main_img'] = $this->yandexDisk->getResource($album['main_img'])->getLink();
+                    $data['albums'][$divider][$key]['user_id'] = $album['user_id'];
+                    $data['albums'][$divider][$key]['date_insert'] = $album['date_insert'];
+                }
+            }
 
 	    	$data['header'] = $this->load->controller('common/header');
 	    	$data['footer'] = $this->load->controller('common/footer');
 	    	$this->view->response('Main/index', $data);
 	    }
+
+	    public function albumAction()
+        {
+            echo 'HI';
+        }
 	}
