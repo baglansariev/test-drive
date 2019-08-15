@@ -60,3 +60,4 @@
 <!-- http://keyword1109.blogspot.com/2012/10/php-gd.html  -->
 <!-- https://github.com/una/CSSgram  -->
 <!-- https://github.com/metafizzy/packery  -->
+<!-- https://professorweb.ru/my/it/blog/net/ajax_upload_files.php  -->

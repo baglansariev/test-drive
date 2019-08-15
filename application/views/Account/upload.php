@@ -183,8 +183,9 @@
             cache: false,
             contentType: false,
             processData: false,
-            beforeSend: function() {
-                $('.file-upload-label span').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов, подождите...');
+            beforeSend: function(e) {
+                // $('.file-upload-label span').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов, подождите...');
+                console.log(e);
             },
             success: function (ans) {
                 if(ans.error_msg){
