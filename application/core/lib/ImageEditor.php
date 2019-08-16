@@ -73,24 +73,25 @@
 
         }
 
-        public function imgSetFilter($img_url, $img_type, $filter = false)
+        public function imgSetFilter($img_url, $img_type)
         {
-            if($filter){
-                $img = imagecreatefrompng($img_url);
+            if(file_exists($img_url)){
+                if($img_type = 'png'){
+                    $img = imagecreatefrompng($img_url);
 
-                if($filter == 'gray'){
-                    imagefilter($img, IMG_FILTER_GRAYSCALE);
-                }
-                elseif($filter == 'green'){
-                    imagefilter($img, IMG_FILTER_COLORIZE, 191,79,79, 50);
-                }
-                elseif($filter == 'purple'){
-                    imagefilter($img, IMG_FILTER_COLORIZE, 41,25,88, 50);
-                }
+                    imagefilter($img, IMG_FILTER_CONTRAST, -10);
 
-                imagepng($img, $img_url);
-                imagedestroy($img);
+                    imagepng($img, $img_url);
+                    imagedestroy($img);
+                }
+                else if($img_type = 'jpeg'){
+                    $img = imagecreatefromjpeg($img_url);
 
+                    imagefilter($img, IMG_FILTER_CONTRAST, -10);
+
+                    imagejpeg($img, $img_url);
+                    imagedestroy($img);
+                }
             }
         }
     }

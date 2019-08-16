@@ -1,5 +1,4 @@
-<pre>
-	<? foreach ($truck as $value) {
-		echo $value;
-	} ?>
-</pre>
+<form action="" method="post" enctype="multipart/form-data">
+    <input type="file" name="image">
+    <input type="submit">
+</form>

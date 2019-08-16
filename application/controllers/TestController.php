@@ -7,8 +7,15 @@
 	{
 		public function indexAction()
 		{
-		    $resource = $this->yandexDisk->getResource($this->session->get('user')['place_name']);
-			devPrint($resource->items[0]->path);
+		    if($this->request->has('image', 'files')){
+		        $newPath = IMAGES_PATH . 'test/' . $this->request->files['image']['name'];
+                move_uploaded_file($this->request->files['image']['tmp_name'], $newPath);
+                $img = imagecreatefromjpeg($newPath);
+                imagefilter($img, IMG_FILTER_CONTRAST, -10);
 
+                echo '<img src="/public/images/test/6.jpg">';
+
+            }
+            $this->view->response('Test/test');
 		}
 	}

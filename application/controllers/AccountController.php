@@ -15,8 +15,8 @@
             $this->view->asset->setTitle('Личный кабинет');
 
             $data = array();
-            $data['account_content'] = $this->load->controller('Account/personalData');
-            $data['column_left'] = $this->load->controller('Account/columnLeft');
+            $data['account_content'] = $this->load->controller('account/personalData');
+            $data['column_left'] = $this->load->controller('account/columnLeft');
             $data['header'] = $this->load->controller('common/header');
             $data['footer'] = $this->load->controller('common/footer');
 
@@ -157,7 +157,7 @@
 
             $data['account_content'] = $this->load->controller('account/myGallery');
 
-            $data['column_left'] = $this->load->controller('Account/columnLeft');
+            $data['column_left'] = $this->load->controller('account/columnLeft');
             $data['header'] = $this->load->controller('common/header');
             $data['footer'] = $this->load->controller('common/footer');
 
@@ -241,8 +241,8 @@
                     if(move_uploaded_file($this->request->files['album_main_file']['tmp_name'], $new_file_path)){
                         // Ставим водяной знак компании
                         $imageEditor->imageStamp($new_file_path, $type);
-//                        // Применяем фильтр для фото
-//                        $imageEditor->imgSetFilter($new_file_path, $type, $filter);
+                        // Применяем фильтр для фото
+                        $imageEditor->imgSetFilter($new_file_path, $type);
                         // Получаем ресурс Яндекс Диска с Путем нового файла
                         $yandexNewFile = $this->yandexDisk->getResource($yandexNewFilePath);
                         if(!$yandexNewFile->has()){
@@ -284,8 +284,8 @@
                                         if($fileType == 'photo'){
                                             // Ставим водяной знак компании
                                             $imageEditor->imageStamp($new_file_path, $type);
-                                            // Применяем фильтр для фото
-//                                            $imageEditor->imgSetFilter($new_file_path, $type, $filter);
+                                             // Применяем фильтр для фото
+                                            $imageEditor->imgSetFilter($new_file_path, $type);
                                             $yandexNewFile = $this->yandexDisk->getResource( $yandexPhotoDir->getPath() . '/' . $this->request->files['album_files']['name'][$key]);
                                             if($yandexNewFile){
                                                 $yandexNewFile->upload($new_file_path);
