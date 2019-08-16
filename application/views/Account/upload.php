@@ -9,20 +9,20 @@
             Главное фото:
             <input id="main_file_upload" name="album_main_file" type="file" value="" required>
         </div>
-        <div class="account-filter-block">
-            Выберите фильтр для ваших фото:
-            <div class="account-filters">
-                <div class="account-filter" data-filter="gray">
-                    <img src="/public/images/filter-examples/filter-gray.jpg" alt="">
-                </div>
-                <div class="account-filter" data-filter="green">
-                    <img src="/public/images/filter-examples/filter-green.jpg" alt="">
-                </div>
-                <div class="account-filter" data-filter="purple">
-                    <img src="/public/images/filter-examples/filter-purple.jpg" alt="">
-                </div>
-            </div>
-        </div>
+<!--        <div class="account-filter-block">-->
+<!--            Выберите фильтр для ваших фото:-->
+<!--            <div class="account-filters">-->
+<!--                <div class="account-filter" data-filter="gray">-->
+<!--                    <img src="/public/images/filter-examples/filter-gray.jpg" alt="">-->
+<!--                </div>-->
+<!--                <div class="account-filter" data-filter="green">-->
+<!--                    <img src="/public/images/filter-examples/filter-green.jpg" alt="">-->
+<!--                </div>-->
+<!--                <div class="account-filter" data-filter="purple">-->
+<!--                    <img src="/public/images/filter-examples/filter-purple.jpg" alt="">-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
         <div class="account-file-block">
             Дополнительные фото:
             <input id="file-upload" name="album_files[]" type="file" multiple>
@@ -35,74 +35,56 @@
         </div>
         <input id="album_btn" type="submit" value="сохранить данные">
     </form>
+    <div class="preloader-cover">
+        <div class="loader">
+            <div class="l_main">
+                <div class="l_square"><span></span><span></span><span></span></div>
+                <div class="l_square"><span></span><span></span><span></span></div>
+                <div class="l_square"><span></span><span></span><span></span></div>
+                <div class="l_square"><span></span><span></span><span></span></div>
+            </div>
+        </div>
+    </div>
 </div>
 <style>
-    .file-form div{
-        margin-bottom: 20px;
-    }
-    .account-filter-block{
-        display: flex;
-        flex-direction: column;
-    }
-    .account-filters{
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .account-filter{
-        width: 32%;
-        height: 150px;
-        overflow: hidden;
-        border: 3px solid #cdcdcd;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        cursor: pointer;
-        transition: all ease 0.4s;
-    }
-    .account-filter:hover{
-        border-color: #c90909;
-    }
-    .account-filter img{
-        width: 100%;
-        height: auto;
-    }
-    .account-file-block{
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: 300px;
-        border: 3px solid #c90909;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        padding: 10px;
-    }
-    #file-upload{
-        position: absolute;
-        overflow: hidden;
-        width: 0.1px;
-        height: 0.1px;
-    }
-    .file-upload-label{
+    .preloader-cover {
+        position: fixed;
         width: 100%;
         height: 100%;
-        background-color: #cdcdcd;
-        -webkit-border-radius: 5px;
-        -moz-border-radius: 5px;
-        border-radius: 5px;
-        padding: 10px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
+        background: rgba(0, 0, 0, 0.7);
+        top: 0;
+        left: 0;
+        overflow-x: hidden;
+        display: none;
     }
-    .fa-file-upload{
-        margin-right: 5px;
-    }
+    .loader{height:100%;width:100%}
+    .loader .l_main{position:absolute;top:50%;left:50%;width:172px;height:128px;margin:0;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}
+    @media (max-width:550px){.loader{-webkit-transform:scale(0.75);transform:scale(0.75)}}
+    @media (max-width:440px){.loader{-webkit-transform:scale(0.5);transform:scale(0.5)}}
+    .l_square{position:relative}
+    .l_square:nth-child(1){margin-left:0px}
+    .l_square:nth-child(2){margin-left:44px}
+    .l_square:nth-child(3){margin-left:88px}
+    .l_square:nth-child(4){margin-left:132px}
+    .l_square span{position:absolute;top:0px;left:20px;height:36px;width:36px;border-radius:2px;background-color:#FFFFFF}
+    .l_square span:nth-child(1){top:0px}
+    .l_square span:nth-child(2){top:44px}
+    .l_square span:nth-child(3){top:88px}
+    .l_square:nth-child(1) span{-webkit-animation:animsquare1 2s infinite ease-in;animation:animsquare1 2s infinite ease-in}
+    .l_square:nth-child(2) span{-webkit-animation:animsquare2 2s infinite ease-in;animation:animsquare2 2s infinite ease-in}
+    .l_square:nth-child(3) span{-webkit-animation:animsquare3 2s infinite ease-in;animation:animsquare3 2s infinite ease-in}
+    .l_square:nth-child(4) span{-webkit-animation:animsquare4 2s infinite ease-in;animation:animsquare4 2s infinite ease-in}
+    .l_square span:nth-child(1){-webkit-animation-delay:0.00s;animation-delay:0.00s}
+    .l_square span:nth-child(2){-webkit-animation-delay:0.15s;animation-delay:0.15s}
+    .l_square span:nth-child(3){-webkit-animation-delay:0.30s;animation-delay:0.30s}
+    @-webkit-keyframes animsquare1{0%,5%,95%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}30%,70%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+    @keyframes animsquare1{0%,5%,95%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}30%,70%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+    @-webkit-keyframes animsquare2{0%,10%,90%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}35%,65%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+    @keyframes animsquare2{0%,10%,90%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}35%,65%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+    @-webkit-keyframes animsquare3{0%,15%,85%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}40%,60%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+    @keyframes animsquare3{0%,15%,85%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}40%,60%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+    @-webkit-keyframes animsquare4{0%,20%,80%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}45%,55%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
+    @keyframes animsquare4{0%,20%,80%,100%{-webkit-transform:translate(0px,0px) rotate(0deg);transform:translate(0px,0px) rotate(0deg)}45%,55%{-webkit-transform:translate(-40px,0px) rotate(-90deg);transform:translate(-40px,0px) rotate(-90deg)}}
 </style>
 <script>
     // $('[name=account_filter]').css('display', 'inline');
@@ -183,11 +165,11 @@
             cache: false,
             contentType: false,
             processData: false,
-            beforeSend: function(e) {
-                // $('.file-upload-label span').html('<i class="fas fa-spinner" style="color: #c90909"></i>'+ ' Идет загрузка файлов, подождите...');
-                console.log(e);
+            beforeSend: function() {
+                $('.preloader-cover').fadeIn();
             },
             success: function (ans) {
+                $('.preloader-cover').fadeOut();
                 if(ans.error_msg){
                     if(!alert(ans.error_msg)){
                         location.reload();
@@ -202,6 +184,7 @@
 
             },
             error: function (ans) {
+                $('.preloader-cover').fadeOut();
                 if(!alert('Ошибка! Попробуйте позже...')){
                     location.reload();
                 }

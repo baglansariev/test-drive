@@ -69,6 +69,12 @@
             return $this->db->getAllRows($query);
         }
 
+        public function getVideosOfAlbum($album_id)
+        {
+            $query = "SELECT * FROM " . DB_PREFIX . "album_videos WHERE album_id = '" . $album_id . "'";
+            return $this->db->getAllRows($query);
+        }
+
         public function getImageById($image_id)
         {
             $query = "SELECT * FROM " . DB_PREFIX . "album_images WHERE id = '" . $image_id . "'";
@@ -87,15 +93,33 @@
             $this->db->changeData($query);
         }
 
+        public function setNewVideo($video_url, $album_id)
+        {
+            $query = "INSERT INTO " . DB_PREFIX . "album_videos SET video_url = '" . $video_url . "', album_id = '" . $album_id . "'";
+            $this->db->changeData($query);
+        }
+
         public function deleteImagesByAlbum($album_id)
         {
             $query = "DELETE FROM " . DB_PREFIX . "album_images WHERE album_id = '" . $album_id . "'";
             $this->db->changeData($query);
         }
 
+        public function deleteVideosByAlbum($album_id)
+        {
+            $query = "DELETE FROM " . DB_PREFIX . "album_videos WHERE album_id = '" . $album_id . "'";
+            $this->db->changeData($query);
+        }
+
         public function deleteImageById($image_id)
         {
             $query = "DELETE FROM " . DB_PREFIX . "album_images WHERE id = '" . $image_id . "'";
+            $this->db->changeData($query);
+        }
+
+        public function deleteVideoById($video_id)
+        {
+            $query = "DELETE FROM " . DB_PREFIX . "album_videos WHERE id = '" . $video_id . "'";
             $this->db->changeData($query);
         }
 

@@ -35,12 +35,20 @@
             $account_model = $this->load->model('account/account');
             $data = array();
             $images = $account_model->getImagesOfAlbum($album_id);
+            $videos = $account_model->getVideosOfAlbum($album_id);
 
             $data['images'] = array();
+            $data['videos'] = array();
             if($images){
                 foreach($images as $key => $image){
                     $data['images'][$key]['url'] = $this->yandexDisk->getResource($image['img_url'])->getLink();
                     $data['images'][$key]['id'] = $image['id'];
+                }
+            }
+            if($videos){
+                foreach($videos as $key => $video){
+                    $data['videos'][$key]['url'] = $this->yandexDisk->getResource($video['video_url'])->getLink();
+                    $data['videos'][$key]['id'] = $video['id'];
                 }
             }
 
@@ -54,6 +62,7 @@
                 $album = $account_model->getAlbumById($this->request->post['album_del']);
                 $resource = $this->yandexDisk->getResource($album['dir_path']);
                 $account_model->deleteAlbumById($album['id']);
+                $account_model->deleteVideosByAlbum($album['id']);
                 $account_model->deleteImagesByAlbum($album['id']);
                 $resource->delete(true);
             }

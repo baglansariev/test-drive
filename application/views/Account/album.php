@@ -5,10 +5,13 @@
             <div class="account-album-image" style="background-image: url('<?php echo $image['url'] ?>')">
                 <span class="img-cover" data-id="<?php echo $image['id'] ?>">
                     <a class="img-action view" href="<?php echo $image['url'] ?>">ПРОСМОТР</a>
-                    <a class="img-action main" href="#">Сделать главным</a>
+<!--                    <a class="img-action main" href="#">Сделать главным</a>-->
                     <a class="img-action delete" href="#">Удалить</a>
                 </span>
             </div>
+        <?php endforeach ?>
+        <?php foreach($videos as $video): ?>
+            <video class="account-album-video" src="<?php echo $video['url'] ?>" controls></video>
         <?php endforeach ?>
     </div>
 </div>

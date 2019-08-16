@@ -31,11 +31,35 @@
                     <p class="registration-input-title">Подтверждение пароля:</p>
                     <input type="password" name="user[confirm]">
                 </div>
+                <div class="registration-input-block">
+                    <p class="register-agreement">
+                        Нажимая на кнопку "Регистрация" вы подтверждаете что соглашаетесь с <a href="#">условиями соглашения</a> сайта
+                    </p>
+                </div>
                 <div class="buttons-block">
                     <input id="register_submit" type="submit" value="Регистрация">
                 </div>
             </form>
         </div>
     </div>
+    <div class="agreement-cover">
+        <img src="/public/images/agreement/agr1.jpg" alt="">
+        <img src="/public/images/agreement/agr2.jpg" alt="">
+        <img src="/public/images/agreement/agr3.jpg" alt="">
+        <img src="/public/images/agreement/agr4.jpg" alt="">
+        <img src="/public/images/agreement/agr5.jpg" alt="">
+    </div>
 </main>
 <?php echo $footer ?>
+
+<script>
+    $('.register-agreement a').click(function (e) {
+        e.preventDefault();
+        $('.agreement-cover').fadeIn();
+    });
+    $('.agreement-cover').click(function (e) {
+        if(e.target !== $('.agreement-cover img')){
+            $('.agreement-cover').fadeOut();
+        }
+    });
+</script>

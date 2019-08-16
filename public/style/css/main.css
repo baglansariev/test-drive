@@ -7,6 +7,7 @@ a{
 }
 main{
 	background-color: #FAFAFA;
+	position: relative;
 }
 body{
 	position: relative;
@@ -721,7 +722,7 @@ input::-moz-placeholder{
 	align-items: center;
 	flex-wrap: wrap;
 }
-.account-album-image{
+.account-album-image, .account-album-video{
 	display: block;
 	width: 23%;
 	height: 200px;
@@ -805,4 +806,143 @@ input::-moz-placeholder{
 .view-img img{
 	width: 100%;
 	height: auto;
+}
+.page-main-title{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	font-size: 45px;
+	text-transform: uppercase;
+	font-weight: bold;
+	letter-spacing: 3px;
+	color: #fff;
+	background-image: url('/public/images/taking-photo.jpg');
+	background-size: cover;
+	background-position: center;
+	background-attachment: fixed;
+	width: 100%;
+	height: 250px;
+}
+.about-text{
+	padding: 50px 0 20px 0;
+	border-bottom: 1px solid #cdcdcd;
+	margin-bottom: 20px;
+}
+.about-text p{
+	display: flex;
+	flex-direction: column;
+	margin-bottom: 0;
+}
+.about-text p span{
+	margin-bottom: 20px;
+}
+.about-block{
+	padding-bottom: 20px;
+	margin-bottom: 40px;
+}
+.block-title{
+	font-weight: bold;
+	margin-bottom: 40px;
+}
+.block-picture img{
+	width: 100%;
+	height: auto;
+	-webkit-border-radius: 10px;
+	-moz-border-radius: 10px;
+	border-radius: 10px;
+}
+.register-agreement{
+	font-size: 12px;
+}
+.register-agreement a{
+	color: #c90909;
+}
+.register-agreement a:hover{
+	color: #000;
+}
+.agreement-cover{
+	position: fixed;
+	background-color: rgba(0, 0, 0, 0.7);
+	width: 100%;
+	height: 100%;
+	display: none;
+	text-align: center;
+	top: 0;
+	left: 0;
+	overflow-y: scroll;
+	cursor: pointer;
+	z-index: 998;
+}
+.agreement-cover img{
+	width: 70%;
+	height: auto;
+	margin: 30px 0;
+	display: inline-block;
+	z-index: 999;
+}
+.file-form div{
+	margin-bottom: 20px;
+}
+.account-filter-block{
+	display: flex;
+	flex-direction: column;
+}
+.account-filters{
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+.account-filter{
+	width: 32%;
+	height: 150px;
+	overflow: hidden;
+	border: 3px solid #cdcdcd;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	cursor: pointer;
+	transition: all ease 0.4s;
+}
+.account-filter:hover{
+	border-color: #c90909;
+}
+.account-filter img{
+	width: 100%;
+	height: auto;
+}
+.account-file-block{
+	display: flex;
+	flex-direction: column;
+	width: 100%;
+	height: 300px;
+	border: 3px solid #c90909;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 10px;
+}
+#file-upload{
+	position: absolute;
+	overflow: hidden;
+	width: 0.1px;
+	height: 0.1px;
+}
+.file-upload-label{
+	width: 100%;
+	height: 100%;
+	background-color: #cdcdcd;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	padding: 10px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	cursor: pointer;
+}
+.fa-file-upload{
+	margin-right: 5px;
 }

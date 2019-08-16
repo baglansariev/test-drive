@@ -7,13 +7,37 @@
         {
             ini_set("gd.jpeg_ignore_warning", 1);
         }
-        public function getImageType($image)
+
+        public function getImageType($imageType)
         {
-            $arr = explode('.', $image);
+            $arr = explode('/', $imageType);
             $type = array_pop($arr);
 
             if($type == 'jpg' || $type == 'jpeg' || $type == 'png' || $type == 'gif'){
                 return $type;
+            }
+        }
+
+        public function getVideoType($videoType)
+        {
+            $arr = explode('/', $videoType);
+            $type = array_pop($arr);
+
+            if($type == 'mp4' || $type == 'mpeg4' || $type == 'avi'){
+                return $type;
+            }
+        }
+
+        public function getFileType($file)
+        {
+            $arr = explode('/', $file);
+            $type = array_pop($arr);
+
+            if($type == 'jpg' || $type == 'jpeg' || $type == 'png' || $type == 'gif'){
+                return 'photo';
+            }
+            else if ($type == 'mp4' || $type == 'mpeg4' || $type == 'avi'){
+                return 'video';
             }
         }
 

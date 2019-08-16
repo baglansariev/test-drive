@@ -12,19 +12,19 @@
         <link  rel="stylesheet" href="/public/style/font-awesome/css/all.min.css">
         <link  rel="stylesheet" href="/public/style/owl-carousel/owl.carousel.min.css">
         <link  rel="stylesheet" href="/public/style/owl-carousel/owl.theme.default.min.css">
-        <link rel="stylesheet" href="/public/style/css/main.css">
         <link rel="stylesheet" href="/public/style/bootstrap/bootstrap-grid.css">
         <link rel="stylesheet" href="/public/style/bootstrap/bootstrap.css">
         <? foreach($this->asset->getCss() as $css): ?>
-        <link rel="stylesheet" href="<?php echo $css ?>">
+            <link rel="stylesheet" href="<?php echo $css ?>">
         <? endforeach ?>
+        <link rel="stylesheet" href="/public/style/css/main.css">
         <script type="text/javascript" src="/public/style/js/jquery-3.4.0.min.js"></script>
         <script type="text/javascript" src="/public/style/owl-carousel/owl.carousel.min.js"></script>
-        <script type="text/javascript" src="/public/style/js/app.js"></script>
         <script type="text/javascript" src="/public/style/font-awesome/js/all.min.js"></script>
         <? foreach($this->asset->getJs() as $js): ?>
-        <script type="text/javascript" src="<?php echo $js ?>"></script>
+            <script type="text/javascript" src="<?php echo $js ?>"></script>
         <? endforeach ?>
+        <script type="text/javascript" src="/public/style/js/app.js"></script>
     </head>
     <body>
         <?php echo $content ?>

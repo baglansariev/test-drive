@@ -4,6 +4,10 @@
 			'controller' => 'home',
 			'action' => 'index',
 		],
+        'about' => [
+            'controller' => 'about',
+            'action' => 'index',
+        ],
         'album/[0-9]+' => [
             'controller' => 'home',
             'action' => 'album',

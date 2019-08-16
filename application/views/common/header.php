@@ -4,9 +4,8 @@
 				<div class="help-links">
 				</div>
 				<div class="user-links">
-					<a href="">
+					<a href="/about">
 						О проекте
-						<i class="fas fa-sort-down"></i>
 					</a>
 					<a href="/login">
 						<i class="fas fa-user-alt"></i>

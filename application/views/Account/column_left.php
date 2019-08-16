@@ -10,10 +10,6 @@
         <i class="fas fa-caret-right"></i>
         <li>Видео обучение</li>
     </a>
-    <a href="/account/agreement" class="menu-point">
-        <i class="fas fa-caret-right"></i>
-        <li>Условия соглашения</li>
-    </a>
     <a href="/account/gallery" class="menu-point">
         <i class="fas fa-caret-right"></i>
         <li>Моя галерея</li>
