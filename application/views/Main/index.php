@@ -5,8 +5,8 @@
             <?php foreach($albums as $album_viewport): ?>
                 <div class="albums-viewport">
                 <?php foreach($album_viewport as $album): ?>
-                    <div class="album">
-                        <img src="<?php echo $album['main_img'] ?>" alt="">
+                    <div class="album" style="background-image: url('<?php echo $album['main_img'] ?>')">
+<!--                        <img src="" alt="">-->
                         <a class="album-cover" href="/album/<?php echo $album['id'] ?>">
                             <h3><?php echo $album['name'] ?></h3>
                             <span><?php echo $album['date_insert'] ?></span>

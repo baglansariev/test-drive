@@ -3,41 +3,56 @@
 
     class ImageEditor
     {
+        public $transfer_dir;
+        public $thumbnail_dir;
+
         public function __construct()
         {
             ini_set("gd.jpeg_ignore_warning", 1);
+            $this->transfer_dir = IMAGES_PATH . 'image-transfer/';
+            $this->thumbnail_dir = IMAGES_PATH . 'thumbnails/';
         }
 
-        public function getImageType($imageType)
+        public function getImageType($file)
         {
-            $arr = explode('/', $imageType);
-            $type = array_pop($arr);
-
-            if($type == 'jpg' || $type == 'jpeg' || $type == 'png' || $type == 'gif'){
-                return $type;
+            if($this->isPhoto($file)){
+                return $this->getType($file);
             }
         }
 
-        public function getVideoType($videoType)
+        public function getVideoType($file)
         {
-            $arr = explode('/', $videoType);
-            $type = array_pop($arr);
+            if($this->isVideo($file)){
+                return $this->getType($file);
+            }
+        }
+
+        public function isPhoto($file)
+        {
+            $type = $this->getType($file);
+
+            if($type == 'jpg' || $type == 'jpeg' || $type == 'png' || $type == 'gif'){
+                return true;
+            }
+            return false;
+        }
+
+        public function isVideo($file)
+        {
+            $type = $this->getType($file);
 
             if($type == 'mp4' || $type == 'mpeg4' || $type == 'avi'){
-                return $type;
+                return true;
             }
+            return false;
         }
 
-        public function getFileType($file)
+        public function isType($response, $type, $message)
         {
-            $arr = explode('/', $file);
-            $type = array_pop($arr);
-
-            if($type == 'jpg' || $type == 'jpeg' || $type == 'png' || $type == 'gif'){
-                return 'photo';
-            }
-            else if ($type == 'mp4' || $type == 'mpeg4' || $type == 'avi'){
-                return 'video';
+            if(!$type){
+                $json['error_msg'] = $message;
+                $response->outputJSON($json);
+                die();
             }
         }
 
@@ -93,5 +108,10 @@
                     imagedestroy($img);
                 }
             }
+        }
+
+        private function getType($file){
+            $arr = explode('/', $file);
+            return array_pop($arr);
         }
     }

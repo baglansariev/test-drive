@@ -202,11 +202,7 @@
 
                 $type = $imageEditor->getImageType($this->request->files['album_main_file']['type']);
 
-                if(!$type){
-                    $json['error_msg'] = $this->form->error_msg['new_album']['wrong_type'];
-                    $this->response->outputJSON($json);
-                    die();
-                }
+                $imageEditor->isType($this->response, $type, $this->form->error_msg['new_album']['wrong_type']);
 
                 $album_name = $this->request->post['album_name'];
                 $account_model = $this->load->model('account/account');
@@ -237,7 +233,7 @@
                     // Получаем данные альбома с БД
                     $album = $account_model->getAlbum($album_name);
                     // Получаем локальный путь нового файла
-                    $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_main_file']['name'];
+                    $new_file_path = $imageEditor->transfer_dir . $this->request->files['album_main_file']['name'];
                     if(move_uploaded_file($this->request->files['album_main_file']['tmp_name'], $new_file_path)){
                         // Ставим водяной знак компании
                         $imageEditor->imageStamp($new_file_path, $type);
@@ -272,13 +268,9 @@
                                             break;
                                     }
 
-                                    if(!$type){
-                                        $json['error_msg'] = $this->form->error_msg['new_album']['wrong_type_additional'];
-                                        $this->response->outputJSON($json);
-                                        die();
-                                    }
+                                    $imageEditor->isType($this->response, $type, $this->form->error_msg['new_album']['wrong_type_additional']);
 //
-                                    $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'][$key];
+                                    $new_file_path = $imageEditor->transfer_dir . $this->request->files['album_files']['name'][$key];
                                     if(move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], $new_file_path)){
                                         // Загрузка фото
                                         if($fileType == 'photo'){
@@ -320,20 +312,16 @@
                                     break;
                             }
 
-                            if(!$type){
-                                $json['error_msg'] = $this->form->error_msg['new_album']['wrong_type_additional'];
-                                $this->response->outputJSON($json);
-                                die();
-                            }
-//
-                            $new_file_path = IMAGES_PATH . 'test/' . $this->request->files['album_files']['name'];
+                            $imageEditor->isType($this->response, $type, $this->form->error_msg['new_album']['wrong_type_additional']);
+
+                            $new_file_path = $imageEditor->transfer_dir . $this->request->files['album_files']['name'];
                             if(move_uploaded_file($this->request->files['album_files']['tmp_name'], $new_file_path)){
                                 // Загрузка фото
                                 if($fileType == 'photo'){
                                     // Ставим водяной знак компании
                                     $imageEditor->imageStamp($new_file_path, $type);
                                     // Применяем фильтр для фото
-//                                            $imageEditor->imgSetFilter($new_file_path, $type, $filter);
+                                    $imageEditor->imgSetFilter($new_file_path, $type);
                                     $yandexNewFile = $this->yandexDisk->getResource( $yandexPhotoDir->getPath() . '/' . $this->request->files['album_files']['name']);
                                     if($yandexNewFile){
                                         $yandexNewFile->upload($new_file_path);

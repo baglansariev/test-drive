@@ -127,6 +127,8 @@ body{
 	width: 33.3%;
 	min-width: 300px;
 	height: 195px;
+	background-position: center;
+	background-size: cover;
 	/* border: 1px solid #DBDBDB; */
 	/* padding: 10px; */
 	background-color: #fff;
