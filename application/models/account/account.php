@@ -81,15 +81,15 @@
             return $this->db->getRow($query);
         }
 
-        public function setNewAlbum($album_name, $album_yandex_path, $main_img_url, $user_id)
+        public function setNewAlbum($album_name, $album_yandex_path, $main_img_url, $thumbnail_path, $user_id)
         {
-            $query = "INSERT INTO " . DB_PREFIX . "albums SET name = '" . $album_name . "', dir_path = '" . $album_yandex_path . "', main_img = '" . $main_img_url . "', user_id = '" . (int)$user_id . "'";
+            $query = "INSERT INTO " . DB_PREFIX . "albums SET name = '" . $album_name . "', dir_path = '" . $album_yandex_path . "', main_img = '" . $main_img_url . "', thumbnail = '" . $thumbnail_path ."', user_id = '" . (int)$user_id . "'";
             $this->db->changeData($query);
         }
 
-        public function setNewImage($img_url, $album_id)
+        public function setNewImage($img_url, $thumbnail_path, $album_id)
         {
-            $query = "INSERT INTO " . DB_PREFIX . "album_images SET img_url = '" . $img_url . "', album_id = '" . $album_id . "'";
+            $query = "INSERT INTO " . DB_PREFIX . "album_images SET img_url = '" . $img_url . "', thumbnail = '" . $thumbnail_path ."', album_id = '" . $album_id . "'";
             $this->db->changeData($query);
         }
 

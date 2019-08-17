@@ -64,6 +64,12 @@
                 $account_model->deleteAlbumById($album['id']);
                 $account_model->deleteVideosByAlbum($album['id']);
                 $account_model->deleteImagesByAlbum($album['id']);
+                $images = $account_model->getImagesOfAlbum($album['id']);
+                foreach ($images as $image) {
+                    if(file_exists(DOCUMENT_ROOT . $image['thumbnail'])){
+                        unlink(DOCUMENT_ROOT . $image['thumbnail']);
+                    }
+                }
                 $resource->delete(true);
             }
         }
@@ -76,6 +82,9 @@
                 $resource = $this->yandexDisk->getResource($image['img_url']);
                 $resource->delete(true);
                 $account_model->deleteImageById($this->request->post['del_id']);
+                if(file_exists(DOCUMENT_ROOT . $image['thumbnail'])){
+                    unlink(DOCUMENT_ROOT . $image['thumbnail']);
+                }
 
                 $json['del_image'] = $this->form->success_msg['del_image'];
                 $this->response->outputJSON($json['del_image']);

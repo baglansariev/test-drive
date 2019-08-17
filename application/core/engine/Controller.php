@@ -8,6 +8,7 @@
 	use core\lib\Response;
 	use core\lib\Form;
 	use core\lib\YandexDisk;
+    use core\lib\ImageEditor;
 
 	abstract class Controller
 	{
@@ -18,6 +19,7 @@
 		public $response;
 		public $form;
 		public $yandexDisk;
+		public $imageEditor;
 
 		public function __construct()
 		{
@@ -28,5 +30,6 @@
 			$this->response = new Response;
 			$this->form = new Form;
 			$this->yandexDisk = new YandexDisk;
+			$this->imageEditor = new ImageEditor;
 		}
 	}

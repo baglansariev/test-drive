@@ -1,7 +1,6 @@
 <?php
     namespace controllers;
     use core\engine\Controller;
-    use core\lib\ImageEditor;
 
     class AccountController extends Controller
     {
@@ -193,16 +192,14 @@
         // Загрузка файлов
         public function fileUploadAction()
         {
-
-            $imageEditor = new ImageEditor;
             $data = array();
             $filter = false;
 
             if($this->request->has('album_name', 'post') && $this->request->has('album_main_file', 'files')){
 
-                $type = $imageEditor->getImageType($this->request->files['album_main_file']['type']);
+                $type = $this->imageEditor->getImageType($this->request->files['album_main_file']['type']);
 
-                $imageEditor->isType($this->response, $type, $this->form->error_msg['new_album']['wrong_type']);
+                $this->imageEditor->hasType($this->response, $type, $this->form->error_msg['new_album']['wrong_type']);
 
                 $album_name = $this->request->post['album_name'];
                 $account_model = $this->load->model('account/account');
@@ -228,24 +225,29 @@
                     // Получаем путь создаваемого файла в новой папке
                     $yandexNewFilePath = $yandexPhotoDir->getPath() . '/' . $this->request->files['album_main_file']['name'];
 
+                    // Сохраняем уменьшенную копию изображения на сервере
+                    $this->imageEditor->resizeImage($this->request->files['album_main_file']['tmp_name'], $this->request->files['album_main_file']['name'], $type);
+                    $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $this->request->files['album_main_file']['name'];
+
                     // Записываем в БД данные нового альбома
-                    $account_model->setNewAlbum($album_name, $yandexNewAlbumPath, $yandexNewFilePath, $this->session->get('user')['id']);
+                    $account_model->setNewAlbum($album_name, $yandexNewAlbumPath, $yandexNewFilePath, $new_thumbnail_path, $this->session->get('user')['id']);
                     // Получаем данные альбома с БД
                     $album = $account_model->getAlbum($album_name);
                     // Получаем локальный путь нового файла
-                    $new_file_path = $imageEditor->transfer_dir . $this->request->files['album_main_file']['name'];
+                    $new_file_path = $this->imageEditor->transfer_dir . $this->request->files['album_main_file']['name'];
+
                     if(move_uploaded_file($this->request->files['album_main_file']['tmp_name'], $new_file_path)){
                         // Ставим водяной знак компании
-                        $imageEditor->imageStamp($new_file_path, $type);
+                        $this->imageEditor->imageStamp($new_file_path, $type);
                         // Применяем фильтр для фото
-                        $imageEditor->imgSetFilter($new_file_path, $type);
+                        $this->imageEditor->imgSetFilter($new_file_path, $type);
                         // Получаем ресурс Яндекс Диска с Путем нового файла
                         $yandexNewFile = $this->yandexDisk->getResource($yandexNewFilePath);
                         if(!$yandexNewFile->has()){
                             // Если такого файла нет загружаем его в Яндекс Диск
                             $yandexNewFile->upload($new_file_path);
                             // Записываем данные изображения в БД
-                            $account_model->setNewImage($yandexNewFile->getPath(), $album['id']);
+                            $account_model->setNewImage($yandexNewFile->getPath(), $new_thumbnail_path, $album['id']);
                             // Удаляем файл в локальной директории
                             unlink($new_file_path);
                         }
@@ -255,33 +257,25 @@
                         if(is_array($this->request->files['album_files']['name'])){
                             foreach($this->request->files['album_files']['name'] as $key => $val) {
                                 if ($val) {
-                                    $fileType = $imageEditor->getFileType($this->request->files['album_files']['type'][$key]);
-                                    switch ($fileType){
-                                        case 'photo':
-                                            $type = $imageEditor->getImageType($this->request->files['album_files']['type'][$key]);
-                                            break;
-                                        case 'video':
-                                            $type = $imageEditor->getVideoType($this->request->files['album_files']['type'][$key]);
-                                            break;
-                                        default:
-                                            $type = false;
-                                            break;
-                                    }
+                                    $type = $this->imageEditor->getFileType($this->request->files['album_files']['type'][$key]);
 
-                                    $imageEditor->isType($this->response, $type, $this->form->error_msg['new_album']['wrong_type_additional']);
-//
-                                    $new_file_path = $imageEditor->transfer_dir . $this->request->files['album_files']['name'][$key];
+                                    $this->imageEditor->hasType($this->response, $type, $this->form->error_msg['new_album']['wrong_type_additional']);
+                                    // Сохраняем уменьшенную копию изображения на сервере
+                                    $this->imageEditor->resizeImage($this->request->files['album_files']['tmp_name'][$key], $this->request->files['album_files']['name'][$key], $type);
+                                    $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $this->request->files['album_files']['name'][$key];
+
+                                    $new_file_path = $this->imageEditor->transfer_dir . $this->request->files['album_files']['name'][$key];
                                     if(move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], $new_file_path)){
                                         // Загрузка фото
-                                        if($fileType == 'photo'){
+                                        if($this->imageEditor->isPhoto($type)){
                                             // Ставим водяной знак компании
-                                            $imageEditor->imageStamp($new_file_path, $type);
+                                            $this->imageEditor->imageStamp($new_file_path, $type);
                                              // Применяем фильтр для фото
-                                            $imageEditor->imgSetFilter($new_file_path, $type);
+                                            $this->imageEditor->imgSetFilter($new_file_path, $type);
                                             $yandexNewFile = $this->yandexDisk->getResource( $yandexPhotoDir->getPath() . '/' . $this->request->files['album_files']['name'][$key]);
                                             if($yandexNewFile){
                                                 $yandexNewFile->upload($new_file_path);
-                                                $account_model->setNewImage($yandexNewFile->getPath(), $album['id']);
+                                                $account_model->setNewImage($yandexNewFile->getPath(), $new_thumbnail_path, $album['id']);
                                                 unlink($new_file_path);
                                             }
                                         }
@@ -299,33 +293,26 @@
                             }
                         }
                         else{
-                            $fileType = $imageEditor->getFileType($this->request->files['album_files']['type']);
-                            switch ($fileType){
-                                case 'photo':
-                                    $type = $imageEditor->getImageType($this->request->files['album_files']['type']);
-                                    break;
-                                case 'video':
-                                    $type = $imageEditor->getVideoType($this->request->files['album_files']['type']);
-                                    break;
-                                default:
-                                    $type = false;
-                                    break;
-                            }
+                            $type = $this->imageEditor->getFileType($this->request->files['album_files']['type']);
 
-                            $imageEditor->isType($this->response, $type, $this->form->error_msg['new_album']['wrong_type_additional']);
+                            $this->imageEditor->hasType($this->response, $type, $this->form->error_msg['new_album']['wrong_type_additional']);
 
-                            $new_file_path = $imageEditor->transfer_dir . $this->request->files['album_files']['name'];
+                            // Сохраняем уменьшенную копию изображения на сервере
+                            $this->imageEditor->resizeImage($this->request->files['album_files']['tmp_name'], $this->request->files['album_files']['name'], $type);
+                            $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $this->request->files['album_files']['name'];
+
+                            $new_file_path = $this->imageEditor->transfer_dir . $this->request->files['album_files']['name'];
                             if(move_uploaded_file($this->request->files['album_files']['tmp_name'], $new_file_path)){
                                 // Загрузка фото
-                                if($fileType == 'photo'){
+                                if($this->imageEditor->isPhoto($type)){
                                     // Ставим водяной знак компании
-                                    $imageEditor->imageStamp($new_file_path, $type);
+                                    $this->imageEditor->imageStamp($new_file_path, $type);
                                     // Применяем фильтр для фото
-                                    $imageEditor->imgSetFilter($new_file_path, $type);
+                                    $this->imageEditor->imgSetFilter($new_file_path, $type);
                                     $yandexNewFile = $this->yandexDisk->getResource( $yandexPhotoDir->getPath() . '/' . $this->request->files['album_files']['name']);
                                     if($yandexNewFile){
                                         $yandexNewFile->upload($new_file_path);
-                                        $account_model->setNewImage($yandexNewFile->getPath(), $album['id']);
+                                        $account_model->setNewImage($yandexNewFile->getPath(), $new_thumbnail_path, $album['id']);
                                         unlink($new_file_path);
                                     }
                                 }
