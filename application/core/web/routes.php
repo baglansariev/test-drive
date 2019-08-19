@@ -9,8 +9,8 @@
             'action' => 'index',
         ],
         'album/[0-9]+' => [
-            'controller' => 'home',
-            'action' => 'album',
+            'controller' => 'album',
+            'action' => 'index',
         ],
         'login' => [
             'controller' => 'account',

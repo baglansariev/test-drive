@@ -38,9 +38,4 @@
 	    	$data['footer'] = $this->load->controller('common/footer');
 	    	$this->view->response('Main/index', $data);
 	    }
-
-	    public function albumAction()
-        {
-            echo 'HI';
-        }
 	}

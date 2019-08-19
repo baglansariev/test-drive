@@ -56,6 +56,7 @@
         left: 0;
         overflow-x: hidden;
         display: none;
+        z-index: 999;
     }
     .loader{height:100%;width:100%}
     .loader .l_main{position:absolute;top:50%;left:50%;width:172px;height:128px;margin:0;-webkit-transform:translate(-50%,-50%);transform:translate(-50%,-50%)}

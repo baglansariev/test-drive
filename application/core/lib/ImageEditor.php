@@ -128,8 +128,8 @@
         public function resizeImage($src, $fileName, $fileType){
             list($takenWidth, $takenHeight) = getimagesize($src);
 
-            $maxWidth = 0;
-            $maxHeight = 0;
+            $maxWidth = $takenWidth;
+            $maxHeight = $takenHeight;
             $i = $takenWidth;
 
             while ($i > 500){
@@ -137,13 +137,6 @@
                 $maxHeight = $i / 2;
                 $i--;
             }
-
-//            if($takenWidth > 500){
-//                $maxWidth = $takenWidth / 2;
-//            }
-//            if($takenHeight > 200){
-//                $maxHeight = $takenHeight / 2;
-//            }
 
             if($fileType == 'jpg' || $fileType == 'jpeg'){
                 $image = imagecreatefromjpeg($src);

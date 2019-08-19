@@ -61,15 +61,15 @@
                 $account_model = $this->load->model('account/account');
                 $album = $account_model->getAlbumById($this->request->post['album_del']);
                 $resource = $this->yandexDisk->getResource($album['dir_path']);
-                $account_model->deleteAlbumById($album['id']);
-                $account_model->deleteVideosByAlbum($album['id']);
-                $account_model->deleteImagesByAlbum($album['id']);
                 $images = $account_model->getImagesOfAlbum($album['id']);
                 foreach ($images as $image) {
                     if(file_exists(DOCUMENT_ROOT . $image['thumbnail'])){
                         unlink(DOCUMENT_ROOT . $image['thumbnail']);
                     }
                 }
+                $account_model->deleteAlbumById($album['id']);
+                $account_model->deleteVideosByAlbum($album['id']);
+                $account_model->deleteImagesByAlbum($album['id']);
                 $resource->delete(true);
             }
         }

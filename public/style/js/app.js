@@ -56,4 +56,12 @@ $(function(){
 			}, 900);			
 		}
 	});
+
+	$('.dg-wrapper a').click(function (e) {
+		e.preventDefault();
+	});
+	$('.dg-center').click(function(e){
+		var src = $(this).data('src');
+		console.log(src);
+	});
 });
