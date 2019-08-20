@@ -11,16 +11,10 @@
     <?php if($images): ?>
         <div class="container album-images">
             <h3 class="section-title">Фото</h3>
-            <div id="dg-container" class="dg-container">
-                <div class="dg-wrapper">
-                    <?php foreach($images as $image): ?>
-                        <a href="" style="background-image: url('<?php echo $image['img_url'] ?>')" data-src="<?php echo $image['img_url'] ?>"></a>
-                    <?php endforeach; ?>
-                </div>
-                <nav>
-                    <span class="dg-prev">&lt;</span>
-                    <span class="dg-next">&gt;</span>
-                </nav>
+            <div class="album-images-wrapper owl-carousel">
+                <?php foreach ($images as $image): ?>
+                    <div class="album-image item" style="background-image: url('<?php echo $image['thumbnail'] ?>')" data-src="<?php echo $image['img_url'] ?>" data-download="<?php echo $image['download_url'] ?>"></div>
+                <?php endforeach; ?>
             </div>
         </div>
     <?php endif ?>
@@ -28,9 +22,11 @@
         <div class="album-videos">
             <div class="container">
                 <h3 class="section-title">Видео</h3>
-                <div class="owl-carousel">
-                    <?php foreach($videos as $video): ?>
-                        <video src="<?php echo $video['video_url'] ?>" class="item" controls></video>
+                <div class="video-gallery">
+                    <?php foreach ($videos as $video): ?>
+                        <div class="video-container">
+                            <video src="<?php echo $video['video_url'] ?>" controls></video>
+                        </div>
                     <?php endforeach; ?>
                 </div>
             </div>

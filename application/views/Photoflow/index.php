@@ -3,9 +3,9 @@
     <div id="gallery" class="no-gutter-sizer">
         <?php foreach($photos as $photo): ?>
             <div class="item-masonry sizer4">
-                <img src="<?php echo $photo['img_url'] ?>" alt="">
+                <img src="<?php echo $photo['thumbnail'] ?>" alt="">
                 <div class="cover-item-gallery">
-                    <a href="">
+                    <a href="" class="flow-img-full" data-src="<?php echo $photo['img_url'] ?>" data-download="<?php echo $photo['download_url'] ?>" data-album-id="/album/<?php echo $photo['album_id'] ?>">
                         <i class="fas fa-plus fa-2x"></i>
                     </a>
                 </div>
@@ -71,6 +71,18 @@
             itemSelector: ".item-masonry",
             columnWidth: sizer,
             percentPosition: true,
+        });
+    });
+
+    $('.flow-img-full').click(function (e) {
+        e.preventDefault();
+        var img = $(this).data('src');
+        var download = $(this).data('download');
+        var album_src = $(this).data('album-id');
+        $('body').append('<div class="album-image-cover"><div class="album-image-full"><img src="'+ img +'"><a href="' + album_src +'" class="album_src">Перейти в альбом</a><a href="' + download + '" class="img-download"><i class="fas fa-download"></i></a><span class="img-close"><i class="fas fa-times"></i></span></div></div>')
+
+        $('.img-close').on('click', function () {
+            $('.album-image-cover').remove();
         });
     });
 </script>

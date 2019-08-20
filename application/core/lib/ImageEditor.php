@@ -125,17 +125,19 @@
             }
         }
 
-        public function resizeImage($src, $fileName, $fileType){
+        public function resizeImage($src, $fileName, $album_name, $fileType){
             list($takenWidth, $takenHeight) = getimagesize($src);
 
             $maxWidth = $takenWidth;
             $maxHeight = $takenHeight;
-            $i = $takenWidth;
 
-            while ($i > 500){
-                $maxWidth = $i / 2;
-                $maxHeight = $i / 2;
-                $i--;
+            if($takenWidth >= 1500){
+                $maxWidth = $takenWidth / 3;
+                $maxHeight = $takenHeight / 3;
+            }
+            else if($takenWidth < 1500 && $takenWidth >= 1000){
+                $maxWidth = $takenWidth / 2;
+                $maxHeight = $takenHeight / 2;
             }
 
             if($fileType == 'jpg' || $fileType == 'jpeg'){
@@ -145,14 +147,30 @@
                 $image = imagecreatefrompng($src);
             }
 
-            $newImage = imagecreatetruecolor($maxWidth, $maxHeight);
-            imagecopyresampled($newImage, $image, 0, 0, 0, 0, $maxWidth, $maxHeight, $takenWidth, $takenHeight);
+            if($image){
+                $newImage = imagecreatetruecolor($maxWidth, $maxHeight);
+                if($newImage){
+                    imagecopyresampled($newImage, $image, 0, 0, 0, 0, $maxWidth, $maxHeight, $takenWidth, $takenHeight);
 
-            if($fileType == 'jpg' || $fileType == 'jpeg'){
-                imagejpeg($newImage, $this->thumbnail_abs_dir . $fileName);
-            }
-            else if ($fileType == 'png'){
-                imagepng($newImage, $this->thumbnail_abs_dir . $fileName);
+                    if($fileType == 'jpg' || $fileType == 'jpeg'){
+                        if(!file_exists($this->thumbnail_abs_dir . $album_name)){
+                            mkdir($this->thumbnail_abs_dir . $album_name);
+                            imagejpeg($newImage, $this->thumbnail_abs_dir . $album_name . '/' . $fileName);
+                        }
+                        else{
+                            imagejpeg($newImage, $this->thumbnail_abs_dir . $album_name . '/' . $fileName);
+                        }
+                    }
+                    else if ($fileType == 'png'){
+                        if(!file_exists($this->thumbnail_abs_dir . $album_name)){
+                            mkdir($this->thumbnail_abs_dir . $album_name);
+                            imagepng($newImage, $this->thumbnail_abs_dir . $album_name . '/' . $fileName);
+                        }
+                        else{
+                            imagepng($newImage, $this->thumbnail_abs_dir . $album_name . '/' . $fileName);
+                        }
+                    }
+                }
             }
         }
 

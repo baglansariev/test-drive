@@ -36,7 +36,7 @@ $(function(){
 
 	$('#search').click(function(){
 		$('body').css('position', 'relative');
-		$('body').append('<div class="search-cover"><form class="search-form"><input type="text" placeholder="Поиск..."/><input type="submit" value="Поиск"></form></div>');
+		$('body').append('<div class="search-cover"><form class="search-form" method="post"><input type="text" placeholder="Поиск..."/><input type="submit" value="Поиск"></form></div>');
 		$('.search-form').animate({
 			'width' : '43%',
 		}, 500).animate({
@@ -63,5 +63,16 @@ $(function(){
 	$('.dg-center').click(function(e){
 		var src = $(this).data('src');
 		console.log(src);
+	});
+
+	$('.album-image').on('click', function () {
+		// console.log($(this).children().find('.album-image-cover'));
+		var img = $(this).data('src');
+		var download = $(this).data('download');
+		$('body').append('<div class="album-image-cover"><div class="album-image-full"><img src="'+ img +'"><a href="' + download + '" class="img-download"><i class="fas fa-download"></i></a><span class="img-close"><i class="fas fa-times"></i></span></div></div>')
+
+		$('.img-close').on('click', function () {
+			$('.album-image-cover').remove();
+		});
 	});
 });

@@ -2,11 +2,11 @@
 <div class="account-page-content">
     <div class="account-album-images">
         <?php foreach($images as $image): ?>
-            <div class="account-album-image" style="background-image: url('<?php echo $image['url'] ?>')">
+            <div class="account-album-image" style="background-image: url('<?php echo $image['thumbnail'] ?>')">
                 <span class="img-cover" data-id="<?php echo $image['id'] ?>">
                     <a class="img-action view" href="<?php echo $image['url'] ?>">ПРОСМОТР</a>
 <!--                    <a class="img-action main" href="#">Сделать главным</a>-->
-                    <a class="img-action delete" href="#">Удалить</a>
+                    <a class="img-action delete" href="#" data-id="<?php echo $image['id'] ?>">Удалить</a>
                 </span>
             </div>
         <?php endforeach ?>
@@ -32,9 +32,8 @@
     $('.img-action.view').click(function(e){
         e.preventDefault();
         var img_href = $(this).attr('href');
-        $('body').append('<div class="img-view-cover"><div class="view-img"><img src="' + img_href + '"><span class="img-download"><i class="fas fa-download"></i></span><span class="img-close"><i class="fas fa-times"></i></span></div></div>');
+        $('body').append('<div class="img-view-cover"><div class="view-img"><img src="' + img_href + '"><span class="img-close"><i class="fas fa-times"></i></span></div></div>');
 
-        // console.log($('.img-view-cover i')[0]);
         $('.img-close').click(function () {
             $('.img-view-cover').remove();
         });
@@ -47,7 +46,7 @@
             type: "POST",
             url: "",
             dataType: "JSON",
-            data: "del_id="+$('.img-cover').data('id'),
+            data: "del_id="+$(this).data('id'),
             success: function (ans) {
                 console.log(ans);
                 if(!alert('Изображение успешно удалено!')){

@@ -6,7 +6,7 @@
 						Подпишись на наши новости и акции!
 					</div>
 					<div class="col-xlg-9 col-lg-9">
-						<form class="newsletter" action="">
+						<form class="newsletter" method="post">
 							<input type="text" placeholder="E-mail">
 							<input type="submit" value="Подписаться">
 						</form>

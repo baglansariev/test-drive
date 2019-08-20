@@ -9,6 +9,7 @@
             $this->view->asset->setCss('/public/style/3d-gallery/css/style.css');
             $this->view->asset->setJs('/public/style/3d-gallery/js/modernizr.custom.53451.js');
             $this->view->asset->setJs('/public/style/3d-gallery/js/jquery.gallery.js');
+            $this->view->asset->setJs('/public/style/owl-carousel/album-image-owl.js');
 
             $album_model = $this->load->model('albums/Albums');
             $uriParams = explode('/', $this->request->getUriWithoutParams());
@@ -34,7 +35,8 @@
                     foreach($images as $key => $image){
                         $data['images'][$key]['id'] = $image['id'];
                         $data['images'][$key]['img_url'] = $this->yandexDisk->getResource($image['img_url'])->getLink();
-                        $data['images'][$key]['thumbnail'] = DOCUMENT_ROOT . $image['thumbnail'];
+                        $data['images'][$key]['download_url'] = $this->yandexDisk->getResource($image['img_url'])->file;
+                        $data['images'][$key]['thumbnail'] = $image['thumbnail'];
                     }
                 }
 
@@ -48,7 +50,6 @@
                 }
             }
 
-//            $this->view->asset->setJs('/public/style/owl-carousel/owl-carousel-switcher.js');
 
             $data['header'] = $this->load->controller('common/header');
             $data['footer'] = $this->load->controller('common/footer');

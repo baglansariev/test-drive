@@ -226,8 +226,8 @@
                     $yandexNewFilePath = $yandexPhotoDir->getPath() . '/' . $this->request->files['album_main_file']['name'];
 
                     // Сохраняем уменьшенную копию изображения на сервере
-                    $this->imageEditor->resizeImage($this->request->files['album_main_file']['tmp_name'], $this->request->files['album_main_file']['name'], $type);
-                    $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $this->request->files['album_main_file']['name'];
+                    $this->imageEditor->resizeImage($this->request->files['album_main_file']['tmp_name'], $this->request->files['album_main_file']['name'], $album_name, $type);
+                    $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $album_name . '/' . $this->request->files['album_main_file']['name'];
 
                     // Записываем в БД данные нового альбома
                     $account_model->setNewAlbum($album_name, $yandexNewAlbumPath, $yandexNewFilePath, $new_thumbnail_path, $this->session->get('user')['id']);
@@ -261,8 +261,8 @@
 
                                     $this->imageEditor->hasType($this->response, $type, $this->form->error_msg['new_album']['wrong_type_additional']);
                                     // Сохраняем уменьшенную копию изображения на сервере
-                                    $this->imageEditor->resizeImage($this->request->files['album_files']['tmp_name'][$key], $this->request->files['album_files']['name'][$key], $type);
-                                    $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $this->request->files['album_files']['name'][$key];
+                                    $this->imageEditor->resizeImage($this->request->files['album_files']['tmp_name'][$key], $this->request->files['album_files']['name'][$key], $album_name, $type);
+                                    $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $album_name . '/' . $this->request->files['album_files']['name'][$key];
 
                                     $new_file_path = $this->imageEditor->transfer_dir . $this->request->files['album_files']['name'][$key];
                                     if(move_uploaded_file($this->request->files['album_files']['tmp_name'][$key], $new_file_path)){
@@ -298,8 +298,8 @@
                             $this->imageEditor->hasType($this->response, $type, $this->form->error_msg['new_album']['wrong_type_additional']);
 
                             // Сохраняем уменьшенную копию изображения на сервере
-                            $this->imageEditor->resizeImage($this->request->files['album_files']['tmp_name'], $this->request->files['album_files']['name'], $type);
-                            $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $this->request->files['album_files']['name'];
+                            $this->imageEditor->resizeImage($this->request->files['album_files']['tmp_name'], $this->request->files['album_files']['name'], $album_name, $type);
+                            $new_thumbnail_path = $this->imageEditor->thumbnail_dir . $album_name . '/' . $this->request->files['album_files']['name'];
 
                             $new_file_path = $this->imageEditor->transfer_dir . $this->request->files['album_files']['name'];
                             if(move_uploaded_file($this->request->files['album_files']['tmp_name'], $new_file_path)){

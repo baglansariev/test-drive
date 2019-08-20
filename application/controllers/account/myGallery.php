@@ -14,7 +14,6 @@
             $uri_params = explode('/', $this->request->getUriWithoutParams());
             if(isset($uri_params[2]) && $uri_params[2] == 'album'){
                 $album_id = (int)$uri_params[3];
-                $this->deleteImage();
 
                 return $this->load->view('Account/album', $this->album($album_id));
             }
@@ -32,6 +31,7 @@
 
         public function album($album_id)
         {
+            $this->deleteImage();
             $account_model = $this->load->model('account/account');
             $data = array();
             $images = $account_model->getImagesOfAlbum($album_id);
@@ -42,6 +42,7 @@
             if($images){
                 foreach($images as $key => $image){
                     $data['images'][$key]['url'] = $this->yandexDisk->getResource($image['img_url'])->getLink();
+                    $data['images'][$key]['thumbnail'] = $image['thumbnail'];
                     $data['images'][$key]['id'] = $image['id'];
                 }
             }
@@ -88,6 +89,7 @@
 
                 $json['del_image'] = $this->form->success_msg['del_image'];
                 $this->response->outputJSON($json['del_image']);
+                exit;
             }
         }
 
